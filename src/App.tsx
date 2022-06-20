@@ -1,13 +1,12 @@
 import React from 'react'
-import Header from './components/Header'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import MenuDrawer from './components/MenuDrawer'
 
 const App = () => {
   return (
-    <div>
-      {/* <Header/> */}
+    <BrowserRouter>
       <MenuDrawer/>
-    </div>
+    </BrowserRouter>
   )
 }
 
