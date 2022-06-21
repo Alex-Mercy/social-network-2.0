@@ -40,8 +40,9 @@ export default function ProfilePage() {
   };
 
   return (
+    <Container maxWidth="xl">
     <Grid container spacing={2} direction="row" justifyContent="center">
-        <Grid item xs={6} sm={4} md={4} lg={3} xl={2} >
+        <Grid item xs={6} sm={4} md={4} lg={3} xl={3} >
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
         avatar={
@@ -74,7 +75,7 @@ export default function ProfilePage() {
     </Card>
     </Grid>
 
-    <Grid item xs={6} sm={8} md={8} lg={9} xl={10}>
+    <Grid item xs={6} sm={8} md={8} lg={9} xl={9}>
     <Card sx={{ maxWidth: 345 }}>
     <CardHeader
       avatar={
@@ -101,5 +102,6 @@ export default function ProfilePage() {
   </Card>
   </Grid>
   </Grid>
+  </Container>
   );
 }

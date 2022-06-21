@@ -9,11 +9,13 @@ import Typography from '@mui/material/Typography';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
+import { Container } from '@mui/material';
 
 export default function MusicPage() {
   const theme = useTheme();
 
   return (
+    <Container maxWidth="xl">
     <Card sx={{ display: 'flex' }}>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <CardContent sx={{ flex: '1 0 auto' }}>
@@ -43,5 +45,6 @@ export default function MusicPage() {
         alt="Live from space album cover"
       />
     </Card>
+    </Container>
   );
 }

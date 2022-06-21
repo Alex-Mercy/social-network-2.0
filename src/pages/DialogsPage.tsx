@@ -6,9 +6,12 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
+import { Button, Stack, TextField } from '@mui/material';
+import { Container } from '@mui/system';
 
 export default function DialogsPage() {
   return (
+    <Container maxWidth="xl">
     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
       <ListItem alignItems="flex-start">
         <ListItemAvatar>
@@ -75,6 +78,13 @@ export default function DialogsPage() {
           }
         />
       </ListItem>
+      
     </List>
+    <Stack spacing={3} direction="row">
+    <TextField id="outlined-basic" label="New message" variant="outlined" />
+    <Button variant="outlined">Send message</Button>
+    </Stack>
+    </Container>
+    
   );
 }

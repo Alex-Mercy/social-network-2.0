@@ -20,7 +20,6 @@ import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import SettingsIcon from '@mui/icons-material/Settings';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import { Avatar, MenuItem, Tooltip } from '@mui/material';
-
 import MenuListItem from './MenuListItem';
 import { Link, Route, Routes } from 'react-router-dom';
 import UsersPage from '../pages/UsersPage';
@@ -29,7 +28,7 @@ import DialogsPage from '../pages/DialogsPage';
 import MusicPage from '../pages/MusicPage';
 import VideosPage from '../pages/VideosPage';
 import SettingsPage from '../pages/SettingsPage';
-
+import { usersApi } from '../store/api/api';
 
 
 const drawerWidth = 240;
@@ -107,6 +106,9 @@ export const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 
 
 
 const MenuDrawer: React.FC = () => {
+  const { data} = usersApi.useGetIsAuthorizedQuery();
+console.log(data?.data.login);
+
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
@@ -147,10 +149,12 @@ const MenuDrawer: React.FC = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Social Network
           </Typography>
-          <Box sx={{ flexGrow: 0 }}>
+
+{data?.data.login ? 
+  <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt={data.data.login} src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
             <Menu
@@ -175,7 +179,12 @@ const MenuDrawer: React.FC = () => {
                 </MenuItem>
               ))}
             </Menu>
-          </Box>
+          </Box> 
+          : "Login"
+}
+           
+
+
         </Toolbar>
 
       </AppBar>
@@ -188,9 +197,9 @@ const MenuDrawer: React.FC = () => {
         <Divider />
         <List>
           {['Profile', 'Users', 'Messages'].map((text, index) => (
-            <MenuListItem text={text} open={open}>
+            <MenuListItem key={index} text={text} open={open}>
               {text === 'Profile' && <AccountBoxIcon />}
-              {text === 'Users' && <GroupIcon/>}
+              {text === 'Users' && <GroupIcon />}
               {text === 'Messages' && <EmailIcon />}
             </MenuListItem>
           ))}
@@ -198,8 +207,8 @@ const MenuDrawer: React.FC = () => {
         <Divider />
         <List>
           {['Music', 'Videos', 'Settings'].map((text, index) => (
-            <MenuListItem text={text} open={open}>
-              {text === 'Music' && <MusicNoteIcon  /> }
+            <MenuListItem key={index} text={text} open={open}>
+              {text === 'Music' && <MusicNoteIcon />}
               {text === 'Videos' && <VideoLibraryIcon />}
               {text === 'Settings' && <SettingsIcon />}
             </MenuListItem>
