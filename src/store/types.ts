@@ -35,3 +35,22 @@ export type MeResponseType = {
     messages: [];
     resultCode: number;
 }
+
+export type LoginFormRequestType = {
+    email: string;
+    password: string;
+    remember: boolean;
+    captcha?: boolean;
+}
+
+export type LoginFormResponseType = {
+    data: {
+        userId: number
+    };
+    fieldsErrors: [{
+        errror: string;
+        field: string
+    }];
+    messages: string[];
+    resultCode: number;
+}

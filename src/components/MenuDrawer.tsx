@@ -19,20 +19,21 @@ import EmailIcon from '@mui/icons-material/Email';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import SettingsIcon from '@mui/icons-material/Settings';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
-import { Avatar, MenuItem, Tooltip } from '@mui/material';
+import { Avatar, Button, MenuItem, Tooltip } from '@mui/material';
 import MenuListItem from './MenuListItem';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import UsersPage from '../pages/UsersPage';
 import ProfilePage from '../pages/ProfilePage';
 import DialogsPage from '../pages/DialogsPage';
 import MusicPage from '../pages/MusicPage';
 import VideosPage from '../pages/VideosPage';
 import SettingsPage from '../pages/SettingsPage';
-import { usersApi } from '../store/api/api';
+import { authApi, usersApi } from '../store/api/api';
+import LoginPage from '../pages/LoginPage';
 
 
 const drawerWidth = 240;
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Profile', 'Users', 'Messages'];
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -103,15 +104,13 @@ export const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 
   }),
 );
 
-
-
 const MenuDrawer: React.FC = () => {
-  const { data} = usersApi.useGetIsAuthorizedQuery();
-console.log(data?.data.login);
-
+  const { data } = authApi.useGetIsAuthorizedQuery();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  const [logout, {}] = authApi.useLogoutMutation();
+  const navigate =useNavigate();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -128,6 +127,12 @@ console.log(data?.data.login);
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const handleLogout = () => {
+    logout();
+    handleCloseUserMenu();
+    navigate('/login');
+  }
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -150,39 +155,44 @@ console.log(data?.data.login);
             Social Network
           </Typography>
 
-{data?.data.login ? 
-  <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={data.data.login} src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+          {data?.data.login ?
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt={data.data.login} src="/static/images/avatar/2.jpg" />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting) => (
+                  <MenuItem key={setting} component={Link} to={setting.toLowerCase()} onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">{setting}</Typography>
+                  </MenuItem>
+                ))}
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography onClick={handleLogout} textAlign="center">Logout</Typography>
                 </MenuItem>
-              ))}
-            </Menu>
-          </Box> 
-          : "Login"
-}
-           
+              </Menu>
+            </Box>
+            : <Button variant="contained" component={Link} to='/login' disableElevation>
+              Login
+            </Button>
+          }
+
 
 
         </Toolbar>
@@ -224,6 +234,7 @@ console.log(data?.data.login);
           <Route path='/music' element={<MusicPage />} />
           <Route path='/videos' element={<VideosPage />} />
           <Route path='/settings' element={<SettingsPage />} />
+          <Route path='/login' element={<LoginPage />} />
         </Routes>
       </Box>
     </Box>
