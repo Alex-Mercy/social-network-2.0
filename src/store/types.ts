@@ -23,18 +23,6 @@ export type FollowType = {
     data: object;
 }
 
-export type MeResponseDataType = {
-    id: number
-    email: string
-    login: string
-}
-
-export type MeResponseType = {
-    data: MeResponseDataType;
-    fieldsErrors: [];
-    messages: [];
-    resultCode: number;
-}
 
 export type LoginFormRequestType = {
     email: string;

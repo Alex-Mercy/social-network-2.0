@@ -155,11 +155,11 @@ const MenuDrawer: React.FC = () => {
             Social Network
           </Typography>
 
-          {data?.data.login ?
+          {data?.login ?
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt={data.data.login} src="/static/images/avatar/2.jpg" />
+                  <Avatar alt={data.login} src="/static/images/avatar/2.jpg" />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -229,7 +229,7 @@ const MenuDrawer: React.FC = () => {
         <DrawerHeader />
         <Routes>
           <Route path='/users' element={<UsersPage />} />
-          <Route path='/profile' element={<ProfilePage />} />
+          <Route path='/profile/*' element={<ProfilePage />} />
           <Route path='/messages' element={<DialogsPage />} />
           <Route path='/music' element={<MusicPage />} />
           <Route path='/videos' element={<VideosPage />} />

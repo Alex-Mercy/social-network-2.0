@@ -14,7 +14,7 @@ import userLogo from '../assets/images/dev.jpg';
 
 const pageSize = 50;
 
-export default function UsersPage() {
+const UsersPage: React.FC = () => {
   const [currentPage, setCurrentPage] = React.useState(1);
   const { data, error, isLoading } = usersApi.useGetAllUsersQuery([currentPage, pageSize]);
   const [follow, {error: followError, isLoading: isFollowLoading}]  = usersApi.useFollowUserMutation();
@@ -73,3 +73,5 @@ export default function UsersPage() {
     </Container>
   );
 }
+
+export default UsersPage;

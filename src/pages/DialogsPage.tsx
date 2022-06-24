@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import { Button, Stack, TextField } from '@mui/material';
 import { Container } from '@mui/system';
 
-export default function DialogsPage() {
+const  DialogsPage: React.FC = () => {
   return (
     <Container maxWidth="xl">
     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
@@ -88,3 +88,5 @@ export default function DialogsPage() {
     
   );
 }
+
+export default DialogsPage;

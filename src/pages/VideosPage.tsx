@@ -1,7 +1,7 @@
 import { Container } from '@mui/material'
-import React from 'react'
+import React, { FC } from 'react'
 
-const VideosPage = () => {
+const VideosPage: FC = () => {
   return (
     <Container maxWidth="xl">
     <div>

@@ -15,93 +15,71 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Container } from '@mui/system';
-import { Grid } from '@mui/material';
+import { Button, Grid, Input, List, ListItem, ListItemText, Stack } from '@mui/material';
+import { authApi, profileApi } from '../store/api/api';
+import { useMatch, useParams } from 'react-router-dom';
+import { PhotoCamera } from '@mui/icons-material';
 
-interface ExpandMoreProps extends IconButtonProps {
-  expand: boolean;
-}
 
-const ExpandMore = styled((props: ExpandMoreProps) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-  marginLeft: 'auto',
-  transition: theme.transitions.create('transform', {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
+const ProfilePage: React.FC = () => {
+  // const {data: authData} = authApi.useGetIsAuthorizedQuery();
+  const match = useMatch("/profile/:userId/");
+  const userId = match ? match.params.userId : '21639';
 
-export default function ProfilePage() {
-  const [expanded, setExpanded] = React.useState(false);
+  const { data: profileData } = profileApi.useGetProfileQuery(userId!);
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
 
   return (
     <Container maxWidth="xl">
-    <Grid container spacing={2} direction="row" justifyContent="center">
+      <Grid container spacing={2} direction="row" justifyContent="center">
         <Grid item xs={6} sm={4} md={4} lg={3} xl={3} >
-    <Card sx={{ maxWidth: 345 }}>
-      <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
-        }
-        action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
-      />
-      <CardMedia
-        component="img"
-        height="194"
-        image="https://catherineasquithgallery.com/uploads/posts/2021-03/1614563215_14-p-kartinka-cheloveka-na-belom-fone-17.png"
-        alt="Paella dish"
-      />
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the mussels,
-          if you like.
-        </Typography>
-      </CardContent>
-    
-    </Card>
-    </Grid>
+          <Card sx={{ maxWidth: 345 }}>
 
-    <Grid item xs={6} sm={8} md={8} lg={9} xl={9}>
-    <Card sx={{ maxWidth: 345 }}>
-    <CardHeader
-      avatar={
-        <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-          R
-        </Avatar>
-      }
-      action={
-        <IconButton aria-label="settings">
-          <MoreVertIcon />
-        </IconButton>
-      }
-      title="Shrimp and Chorizo Paella"
-      subheader="September 14, 2016"
-    />
-    <CardContent>
-      <Typography variant="body2" color="text.secondary">
-        This impressive paella is a perfect party dish and a fun meal to cook
-        together with your guests. Add 1 cup of frozen peas along with the mussels,
-        if you like.
-      </Typography>
-    </CardContent>
-  
-  </Card>
-  </Grid>
-  </Grid>
-  </Container>
+            <CardMedia
+              component="img"
+              height="300"
+              image="https://catherineasquithgallery.com/uploads/posts/2021-03/1614563215_14-p-kartinka-cheloveka-na-belom-fone-17.png"
+              alt="Paella dish"
+            />
+            <CardContent>
+              <input type="file" ></input>
+            </CardContent>
+
+          </Card>
+        </Grid>
+
+        <Grid item xs={6} sm={8} md={8} lg={9} xl={9}>
+          <Card sx={{ maxWidth: 500 }}>
+
+            <CardContent>
+
+              <ListItem >
+                <b>Full name</b>: {profileData?.fullName}
+              </ListItem>
+              <ListItem >
+                <b>Looking for a job</b>: {profileData?.lookingForAJob}
+              </ListItem>
+              <ListItem >
+                <b>My professioanal slills</b>: {profileData?.lookingForAJobDescription}
+              </ListItem>
+              <ListItem >
+                <b>About me</b>: {profileData?.aboutMe}
+              </ListItem>
+              {profileData && Object.entries(profileData.contacts).map((key) => (
+                <ListItem key={key[0]}>
+                  <b>{key[0]}</b>: {key[1]}
+                </ListItem>
+              ))}
+
+              <Button variant='outlined'>Edit profile</Button>
+            </CardContent>
+
+          </Card>
+        </Grid>
+      </Grid>
+    </Container>
   );
 }
+
+
+export default ProfilePage;

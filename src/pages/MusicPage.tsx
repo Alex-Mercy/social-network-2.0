@@ -11,7 +11,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import { Container } from '@mui/material';
 
-export default function MusicPage() {
+const MusicPage: React.FC = () => {
   const theme = useTheme();
 
   return (
@@ -48,3 +48,5 @@ export default function MusicPage() {
     </Container>
   );
 }
+
+export default MusicPage;

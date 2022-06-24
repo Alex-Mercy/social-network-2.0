@@ -28,7 +28,7 @@ const validationSchema = yup.object().shape({
   
 });
 
-export default function LoginPage() {
+const LoginPage: React.FC = () => {
   // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
   //   event.preventDefault();
   //   const data = new FormData(event.currentTarget);
@@ -125,12 +125,10 @@ export default function LoginPage() {
           </Form>
         )}
       </Formik>
-
-
-        
-        
         
       </Container>
     </ThemeProvider>
   );
 }
+
+export default LoginPage;
