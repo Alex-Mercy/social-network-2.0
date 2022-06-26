@@ -8,9 +8,10 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { Box, Button, Pagination } from '@mui/material';
 import { Container } from '@mui/system';
-import { usersApi } from '../store/api/api';
 
 import userLogo from '../assets/images/dev.jpg';
+import { usersApi } from '../store/api/usersApi';
+import { Link } from 'react-router-dom';
 
 const pageSize = 50;
 
@@ -25,12 +26,10 @@ const UsersPage: React.FC = () => {
   };
 
   
-  
-
   const handleFollow = async () => {
-    await follow(567);
+    await follow(2);
 }
-
+{console.log(data?.items)}
   return (
     <Container maxWidth="md">
       <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
@@ -39,9 +38,11 @@ const UsersPage: React.FC = () => {
         {data?.items?.map(user =>
           <div key={user.id}>
             <ListItem alignItems="flex-start">
-              <ListItemAvatar>
+              <Link to={'/profile/' + user.id}>
+              <ListItemAvatar >
                 <Avatar alt="User" src={user.photos.small ? user.photos.small : userLogo} />
               </ListItemAvatar>
+              </Link>
               <ListItemText
                 primary={user.name}
                 secondary={
@@ -59,6 +60,7 @@ const UsersPage: React.FC = () => {
 
                 }
               />
+              
               {user.followed ?
                 <Button variant="contained">Unfollow</Button>
                 : <Button variant="outlined" onClick={handleFollow}>Follow</Button>

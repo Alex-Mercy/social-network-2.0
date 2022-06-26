@@ -14,10 +14,9 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import * as yup from "yup";
 import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik';
-import { LoginFormRequestType } from '../store/types';
 import { FormTextField } from '../components/FormTextField';
-import { authApi } from '../store/api/api';
 import { useNavigate } from 'react-router-dom';
+import { authApi, LoginFormRequestType } from '../store/api/authApi';
 
 
 const theme = createTheme();

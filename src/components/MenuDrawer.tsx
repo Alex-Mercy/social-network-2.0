@@ -28,8 +28,8 @@ import DialogsPage from '../pages/DialogsPage';
 import MusicPage from '../pages/MusicPage';
 import VideosPage from '../pages/VideosPage';
 import SettingsPage from '../pages/SettingsPage';
-import { authApi, usersApi } from '../store/api/api';
 import LoginPage from '../pages/LoginPage';
+import { authApi } from '../store/api/authApi';
 
 
 const drawerWidth = 240;

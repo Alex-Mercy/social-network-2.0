@@ -1,6 +1,8 @@
 import { Action, combineReducers, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { authApi, profileApi, usersApi } from "./api/api";
+import { authApi } from "./api/authApi";
+import { profileApi } from "./api/profileApi";
+import { usersApi } from "./api/usersApi";
 
 const rootReducer = combineReducers({
     [usersApi.reducerPath] : usersApi.reducer,
