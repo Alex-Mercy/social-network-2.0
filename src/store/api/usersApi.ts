@@ -30,6 +30,10 @@ export const usersApi = createApi({
         getAllUsers: build.query<UsersType, number[]>({
             query: ([currentPage = 1, pageSize = 10]) => ({
                 url: 'users',
+                credentials: 'include',
+                headers: {
+                    "API-KEY": "24635b41-a830-49f0-81e2-67ea1fbc69b6"
+                },
                 params: {
                     page: currentPage,
                     count: pageSize

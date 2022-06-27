@@ -9,66 +9,31 @@ import Typography from '@mui/material/Typography';
 import { Box, Button, Pagination } from '@mui/material';
 import { Container } from '@mui/system';
 
-import userLogo from '../assets/images/dev.jpg';
+
 import { usersApi } from '../store/api/usersApi';
 import { Link } from 'react-router-dom';
+import { followApi } from '../store/api/followApi';
+import UserItem from '../components/UserItem';
 
 const pageSize = 50;
 
 const UsersPage: React.FC = () => {
   const [currentPage, setCurrentPage] = React.useState(1);
   const { data, error, isLoading } = usersApi.useGetAllUsersQuery([currentPage, pageSize]);
-  const [follow, {error: followError, isLoading: isFollowLoading}]  = usersApi.useFollowUserMutation();
+
 
   const pagesCount = data?.totalCount && Math.ceil(data.totalCount / pageSize);
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setCurrentPage(value);
   };
 
-  
-  const handleFollow = async () => {
-    await follow(2);
-}
-{console.log(data?.items)}
   return (
     <Container maxWidth="md">
       <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
         {isLoading && <h1>Идет загрузка...</h1>}
         {error && <h1>Произошла ошибка при загрузке</h1>}
         {data?.items?.map(user =>
-          <div key={user.id}>
-            <ListItem alignItems="flex-start">
-              <Link to={'/profile/' + user.id}>
-              <ListItemAvatar >
-                <Avatar alt="User" src={user.photos.small ? user.photos.small : userLogo} />
-              </ListItemAvatar>
-              </Link>
-              <ListItemText
-                primary={user.name}
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      sx={{ display: 'inline' }}
-                      component="span"
-                      variant="body2"
-                      color="text.primary"
-                    >
-                      {user.status && 'status:'} {user.status}
-                    </Typography>
-
-                  </React.Fragment>
-
-                }
-              />
-              
-              {user.followed ?
-                <Button variant="contained">Unfollow</Button>
-                : <Button variant="outlined" onClick={handleFollow}>Follow</Button>
-              }
-            </ListItem>
-
-            <Divider variant="inset" component="li" />
-          </div>
+          <UserItem  key={user.id} user={user}/>
         )}
       </List>
       <Pagination count={pagesCount} page={currentPage} onChange={handleChange} />

@@ -11,19 +11,9 @@ export const followApi = createApi({
     baseQuery: fetchBaseQuery({baseUrl: 'https://social-network.samuraijs.com/api/1.0/follow'}),
     tagTypes: ['Follow'],
     endpoints: (build) => ({
-        getIsFollowed: build.query<boolean, number[]>({
-            query: ([currentPage = 1, pageSize = 10]) => ({
-                url: 'users',
-                params: {
-                    page: currentPage,
-                    count: pageSize
-                }
-            }),
-            providesTags: result => ['Follow']
-        }),
         followUser: build.mutation<FollowType, number>({
             query: (userId) => ({
-                url: `follow/${userId}`,
+                url: `${userId}`,
                 credentials: 'include',
                 headers: {
                     "API-KEY": "24635b41-a830-49f0-81e2-67ea1fbc69b6"
@@ -35,7 +25,7 @@ export const followApi = createApi({
         }),
         unFollowUser: build.mutation<FollowType, number>({
             query: (userId) => ({
-                url: `follow/${userId}`,
+                url: `${userId}`,
                 credentials: 'include',
                 headers: {
                     "API-KEY": "24635b41-a830-49f0-81e2-67ea1fbc69b6"

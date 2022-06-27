@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import { authApi } from '../store/api/authApi';
 import { profileApi } from '../store/api/profileApi';
 import userLogo from '../assets/images/dev.jpg';
+import EditDataProfile from '../components/EditDataProfile';
 
 
 const ProfilePage: React.FC = () => {
@@ -19,14 +20,24 @@ const ProfilePage: React.FC = () => {
     skip: authData?.id === undefined
   });
 
+ 
+  
+  const contactsData = profileData && Object.entries(profileData.contacts);
 
-  const [uploaadPhoto, {}] = profileApi.useUploadFileMutation()
+
+  const [editMode, setEditMode] = React.useState(false);
+  const listTitles = ['Full name', 'Looking for a job', 'My professional slills', 'About me',];
+
+  const [uploaadPhoto, { }] = profileApi.useUploadFileMutation()
   const selectNewAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length) {
       uploaadPhoto(e.target.files[0]);
     }
   }
 
+  const handleClick = () => {
+    setEditMode(!editMode);
+  }
 
   return (
     <Container maxWidth="xl">
@@ -40,14 +51,14 @@ const ProfilePage: React.FC = () => {
               image={profileData?.photos.large ? profileData?.photos.large : userLogo}
               alt='User Avatar'
             />
-            
-              {!paramsId &&
+
+            {!paramsId &&
               <CardContent>
                 <input onChange={selectNewAvatar} type="file" ></input>
-                </CardContent>
-              }
+              </CardContent>
+            }
 
-            
+
 
           </Card>
         </Grid>
@@ -55,27 +66,32 @@ const ProfilePage: React.FC = () => {
         <Grid item xs={6} sm={8} md={8} lg={9} xl={9}>
           <Card sx={{ maxWidth: 500 }}>
             <CardContent>
-              <List>
-                <ListItem >
-                  <b>Full name</b>: {profileData?.fullName}
-                </ListItem>
-                <ListItem >
-                  <b>Looking for a job</b>: {profileData?.lookingForAJob}
-                </ListItem>
-                <ListItem >
-                  <b>My professioanal slills</b>: {profileData?.lookingForAJobDescription}
-                </ListItem>
-                <ListItem >
-                  <b>About me</b>: {profileData?.aboutMe}
-                </ListItem>
-                {profileData && Object.entries(profileData.contacts).map((key) => (
-                  <ListItem key={key[0]}>
-                    <b>{key[0]}</b>: {key[1]}
+              {editMode
+                ? <EditDataProfile data={profileData} handleClick={handleClick} contactsData={contactsData} listTitles={listTitles} />
+                : 
+                <List>
+                  <ListItem >
+                    <b>{listTitles[0]}</b>: {profileData?.fullName}
                   </ListItem>
-                ))}
-              </List>
-              {!paramsId &&
-                <Button variant='outlined'>Edit profile</Button>
+                  <ListItem >
+                    <b>{listTitles[1]}</b>: {profileData?.lookingForAJob ? 'Yes' : 'No'}
+                  </ListItem>
+                  <ListItem >
+                    <b>{listTitles[2]}</b>: {profileData?.lookingForAJobDescription}
+                  </ListItem>
+                  <ListItem >
+                    <b>{listTitles[3]}</b>: {profileData?.aboutMe}
+                  </ListItem>
+                  {contactsData && contactsData.map((key) => (
+                    <ListItem key={key[0]}>
+                      <b>{key[0]}</b>: {key[1]}
+                    </ListItem>
+                  ))}
+                </List>
+              }
+
+              {!paramsId && !editMode &&
+                <Button onClick={handleClick} variant='outlined'>Edit profile</Button>
               }
             </CardContent>
 
