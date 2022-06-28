@@ -1,6 +1,4 @@
 import { ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
-
-import MailIcon from '@mui/icons-material/Mail';
 import React, { FC } from 'react'
 import { Link } from 'react-router-dom';
 

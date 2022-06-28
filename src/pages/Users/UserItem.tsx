@@ -1,8 +1,8 @@
 import { Avatar, Button, Divider, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material'
 import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
-import { usersApi, UserType } from '../store/api/usersApi';
-import userLogo from '../assets/images/dev.jpg';
+import { usersApi, UserType } from '../../store/api/usersApi';
+import userLogo from '../../assets/images/dev.jpg';
 
 type UserItemProps = {
     user: UserType;

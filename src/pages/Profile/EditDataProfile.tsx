@@ -1,8 +1,8 @@
-import { Button, Checkbox, FormControlLabel, List, Stack, TextField } from '@mui/material';
+import { Button, Checkbox, FormControlLabel, List, Stack} from '@mui/material';
 import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik';
 import React, { FC } from 'react'
-import { profileApi, ProfileRequestType, ProfileResponseType } from '../store/api/profileApi';
-import { FormTextField } from './FormTextField';
+import { profileApi, ProfileRequestType, ProfileResponseType } from '../../store/api/profileApi';
+import { FormTextField } from '../Login/FormTextField';
 
 type EditDataProps = {
     data?: ProfileResponseType;

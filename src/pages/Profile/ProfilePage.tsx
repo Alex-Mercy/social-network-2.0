@@ -3,16 +3,16 @@ import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import { Container } from '@mui/system';
-import { Button, Grid, Input, List, ListItem, ListItemText, Stack } from '@mui/material';
+import { Button, Grid, List, ListItem, Skeleton } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import { authApi } from '../store/api/authApi';
-import { profileApi } from '../store/api/profileApi';
-import userLogo from '../assets/images/dev.jpg';
-import EditDataProfile from '../components/EditDataProfile';
+import { authApi } from '../../store/api/authApi';
+import { profileApi } from '../../store/api/profileApi';
+import userLogo from '../../assets/images/dev.jpg';
+import EditDataProfile from './EditDataProfile';
 
 
 const ProfilePage: React.FC = () => {
-  const { data: authData } = authApi.useGetIsAuthorizedQuery();
+  const { data: authData, isLoading } = authApi.useGetIsAuthorizedQuery();
   const params = useParams();
   const paramsId = Object.values(params)[0];
   const userId = paramsId ? paramsId : authData?.id;
@@ -20,8 +20,6 @@ const ProfilePage: React.FC = () => {
     skip: authData?.id === undefined
   });
 
- 
-  
   const contactsData = profileData && Object.entries(profileData.contacts);
 
 
@@ -39,28 +37,45 @@ const ProfilePage: React.FC = () => {
     setEditMode(!editMode);
   }
 
+  console.log(isLoading);
+
+
   return (
     <Container maxWidth="xl">
       <Grid container spacing={2} direction="row" justifyContent="center">
         <Grid item xs={6} sm={4} md={4} lg={3} xl={3} >
-          <Card sx={{ maxWidth: 345 }}>
+          {!isLoading ?
+            <Card sx={{ maxWidth: 345 }}>
 
-            <CardMedia
-              component="img"
-              height="300"
-              image={profileData?.photos.large ? profileData?.photos.large : userLogo}
-              alt='User Avatar'
-            />
+              <CardMedia
+                component="img"
+                height="300"
+                image={profileData?.photos.large ? profileData?.photos.large : userLogo}
+                alt='User Avatar'
+              />
 
-            {!paramsId &&
-              <CardContent>
-                <input onChange={selectNewAvatar} type="file" ></input>
-              </CardContent>
-            }
+              {!paramsId &&
+                <CardContent>
+                  <input onChange={selectNewAvatar} type="file" ></input>
+                </CardContent>
+              }
 
 
 
-          </Card>
+            </Card>
+            : <Skeleton variant="rectangular">
+              <Card sx={{ maxWidth: 345 }}>
+                <CardMedia
+                  component="img"
+                  height="300"
+                />
+                {!paramsId &&
+                  <CardContent>
+                  </CardContent>
+                }
+              </Card>
+            </Skeleton>
+          }
         </Grid>
 
         <Grid item xs={6} sm={8} md={8} lg={9} xl={9}>
@@ -68,7 +83,7 @@ const ProfilePage: React.FC = () => {
             <CardContent>
               {editMode
                 ? <EditDataProfile data={profileData} handleClick={handleClick} contactsData={contactsData} listTitles={listTitles} />
-                : 
+                :
                 <List>
                   <ListItem >
                     <b>{listTitles[0]}</b>: {profileData?.fullName}

@@ -3,11 +3,14 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { authApi } from "./api/authApi";
 import { profileApi } from "./api/profileApi";
 import { usersApi } from "./api/usersApi";
+import { dialogSlice } from "./reducers/dialogSlice";
 
 const rootReducer = combineReducers({
+
     [usersApi.reducerPath] : usersApi.reducer,
     [authApi.reducerPath] : authApi.reducer,
     [profileApi.reducerPath] : profileApi.reducer,
+    dialogSlice: dialogSlice.reducer,
 
 })
 

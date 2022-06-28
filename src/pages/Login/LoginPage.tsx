@@ -4,8 +4,6 @@ import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
@@ -13,9 +11,9 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import * as yup from "yup";
 import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik';
-import { FormTextField } from '../components/FormTextField';
+import { FormTextField } from './FormTextField';
 import { useNavigate } from 'react-router-dom';
-import { authApi, LoginFormRequestType } from '../store/api/authApi';
+import { authApi, LoginFormRequestType } from '../../store/api/authApi';
 
 
 const theme = createTheme();
@@ -27,14 +25,6 @@ const validationSchema = yup.object().shape({
 });
 
 const LoginPage: React.FC = () => {
-  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget);
-  //   console.log({
-  //     email: data.get('email'),
-  //     password: data.get('password'),
-  //   });
-  // };
 
   const navigate = useNavigate();
   const [login, { data, status }] = authApi.useLoginMutation();
@@ -105,10 +95,17 @@ const LoginPage: React.FC = () => {
                     autoComplete="current-password"
                     component={FormTextField}
                   />
-                  <FormControlLabel
-                    control={<Checkbox value="remember" name='remeber' color="primary" />}
+                  <Field
+                    as={FormControlLabel}
+                    type="checkbox"
+                    name='remember'
+                    control={<Checkbox />}
                     label="Remember me"
                   />
+                  {/* <FormControlLabel
+                    control={<Checkbox value="remember" name='remeber' color="primary" />}
+                    label="Remember me"
+                  /> */}
                   <Button
                     type="submit"
                     disabled={formikProps.isSubmitting}

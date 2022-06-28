@@ -1,19 +1,12 @@
 import * as React from 'react';
 import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
-import { Box, Button, Pagination } from '@mui/material';
+
+import {Pagination } from '@mui/material';
 import { Container } from '@mui/system';
 
 
-import { usersApi } from '../store/api/usersApi';
-import { Link } from 'react-router-dom';
-import { followApi } from '../store/api/followApi';
-import UserItem from '../components/UserItem';
+import { usersApi } from '../../store/api/usersApi';
+import UserItem from './UserItem';
 
 const pageSize = 50;
 
