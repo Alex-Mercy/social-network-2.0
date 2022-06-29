@@ -26,7 +26,7 @@ export type RequestUsersType = {
     count: number;
     page: number;
     term?: string;
-    friend?: boolean;
+    friend: boolean | null;
 }
 
 export const usersApi = createApi({
@@ -35,7 +35,7 @@ export const usersApi = createApi({
     tagTypes: ['Users'],
     endpoints: (build) => ({
         getAllUsers: build.query<UsersType, RequestUsersType>({
-            query: ({count = 10, page = 1, term = '', friend = false}) => ({
+            query: ({count = 10, page = 1, term = '', friend = null }) => ({
                 url: 'users',
                 credentials: 'include',
                 headers: {
