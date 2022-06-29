@@ -7,6 +7,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useNavigate } from 'react-router-dom';
 import { authApi } from '../../store/api/authApi';
 import { drawerWidth } from '../../App';
+import { profileApi } from '../../store/api/profileApi';
 
 interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
@@ -56,6 +57,10 @@ const Header: FC<HeaderProps> = ({ handleDrawerOpen, open, MenuPrimaryItems }) =
     }
 
     const { data } = authApi.useGetIsAuthorizedQuery();
+    const { data: profileData, isLoading: profileLoading} = profileApi.useGetProfileQuery(data?.id!, {
+      skip: data?.id === undefined
+    });
+  
 
     return (
         <AppBar position="fixed" open={open}>
@@ -80,7 +85,7 @@ const Header: FC<HeaderProps> = ({ handleDrawerOpen, open, MenuPrimaryItems }) =
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt={data.login} src="/static/images/avatar/2.jpg" />
+                  <Avatar alt={data.login} src={profileData?.photos.small!} />
                 </IconButton>
               </Tooltip>
               <Menu

@@ -8,12 +8,9 @@ type LoaderProps = {
 
 const Loader: React.FC<LoaderProps> = ({children}) => {
   return (
-    <Stack spacing={1}>
       <Skeleton variant="rectangular">
         {children}
       </Skeleton>
-      
-    </Stack>
   );
 }
 

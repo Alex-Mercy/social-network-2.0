@@ -22,21 +22,30 @@ export type FollowType = {
     data: object;
 }
 
+export type RequestUsersType = {
+    count: number;
+    page: number;
+    term?: string;
+    friend?: boolean;
+}
+
 export const usersApi = createApi({
     reducerPath: 'usersApi',
     baseQuery: fetchBaseQuery({baseUrl: 'https://social-network.samuraijs.com/api/1.0/'}),
     tagTypes: ['Users'],
     endpoints: (build) => ({
-        getAllUsers: build.query<UsersType, number[]>({
-            query: ([currentPage = 1, pageSize = 10]) => ({
+        getAllUsers: build.query<UsersType, RequestUsersType>({
+            query: ({count = 10, page = 1, term = '', friend = false}) => ({
                 url: 'users',
                 credentials: 'include',
                 headers: {
                     "API-KEY": "24635b41-a830-49f0-81e2-67ea1fbc69b6"
                 },
                 params: {
-                    page: currentPage,
-                    count: pageSize
+                    count,
+                    page,
+                    term,
+                    friend
                 }
             }),
             providesTags: result => ['Users']

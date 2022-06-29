@@ -9,7 +9,7 @@ type UserItemProps = {
 
 }
 
-const UserItem: FC<UserItemProps> = ({user, }) => {
+const UserItem: FC<UserItemProps> = ({user }) => {
     const [follow, {error: followError, isLoading: isFollowLoading, data: followData}]  = usersApi.useFollowUserMutation();
     const [unfollow, {isLoading: isUnFollowLoading, data: unFollowData}] = usersApi.useUnFollowUserMutation();
 
