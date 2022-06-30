@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Container } from '@mui/system';
-import { Grid} from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { Grid } from '@mui/material';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { authApi } from '../../store/api/authApi';
 import { profileApi } from '../../store/api/profileApi';
 import AvatarCard from './AvatarCard';
@@ -10,11 +10,11 @@ import Loader from '../../components/Loader';
 
 
 const ProfilePage: React.FC = () => {
-  const { data: authData, isLoading  } = authApi.useGetIsAuthorizedQuery();
+  const { data: authData, isLoading } = authApi.useGetIsAuthorizedQuery();
   const params = useParams();
   const paramsId = Object.values(params)[0];
   const userId = paramsId ? paramsId : authData?.id;
-  const { data: profileData, isLoading: profileLoading} = profileApi.useGetProfileQuery(userId!, {
+  const { data: profileData, isLoading: profileLoading } = profileApi.useGetProfileQuery(userId!, {
     skip: authData?.id === undefined
   });
 
@@ -23,47 +23,52 @@ const ProfilePage: React.FC = () => {
 
 
   return (
-    <Container maxWidth="xl">
-      <Grid container spacing={2} direction="row" justifyContent="center">
-        <Grid item xs={6} sm={4} md={4} lg={3} xl={3} >
-          {!profileLoading ?
-            <AvatarCard
-              isLoading={isLoading}
-              profileData={profileData}
-              paramsId={paramsId}
-            />
-            : <Loader>
-              <AvatarCard
-                profileData={profileData}
-                paramsId={paramsId}
-                isLoading={isLoading}
-              />
-            </Loader>
-          }
-        </Grid>
+    <>
+      {!authData?.id ?
+        <Navigate to="/login" />
+        : <Container maxWidth="xl">
+          <Grid container spacing={2} direction="row" justifyContent="center">
+            <Grid item xs={6} sm={4} md={4} lg={3} xl={3} >
+              {!profileLoading ?
+                <AvatarCard
+                  isLoading={isLoading}
+                  profileData={profileData}
+                  paramsId={paramsId}
+                />
+                : <Loader>
+                  <AvatarCard
+                    profileData={profileData}
+                    paramsId={paramsId}
+                    isLoading={isLoading}
+                  />
+                </Loader>
+              }
+            </Grid>
 
-        <Grid item xs={6} sm={8} md={8} lg={9} xl={9}>
-          {!profileLoading ?
-            <ContentCard
-              profileData={profileData}
-              paramsId={paramsId}
-              listTitles={listTitles}
-              contactsData={contactsData}
-              isLoading={isLoading}
-            />
-            : <Loader>
-              <ContentCard
-                profileData={profileData}
-                paramsId={paramsId}
-                listTitles={listTitles}
-                contactsData={contactsData}
-                isLoading={isLoading}
-              />
-            </Loader>
-          }
-        </Grid>
-      </Grid>
-    </Container>
+            <Grid item xs={6} sm={8} md={8} lg={9} xl={9}>
+              {!profileLoading ?
+                <ContentCard
+                  profileData={profileData}
+                  paramsId={paramsId}
+                  listTitles={listTitles}
+                  contactsData={contactsData}
+                  isLoading={isLoading}
+                />
+                : <Loader>
+                  <ContentCard
+                    profileData={profileData}
+                    paramsId={paramsId}
+                    listTitles={listTitles}
+                    contactsData={contactsData}
+                    isLoading={isLoading}
+                  />
+                </Loader>
+              }
+            </Grid>
+          </Grid>
+        </Container>
+      }
+    </>
   );
 }
 

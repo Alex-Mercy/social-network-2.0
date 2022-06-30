@@ -10,8 +10,11 @@ import { Container } from '@mui/system';
 import userLogo from '../../assets/images/dev.jpg';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { dialogSlice } from '../../store/reducers/dialogSlice';
+import { authApi } from '../../store/api/authApi';
+import { Navigate } from 'react-router-dom';
 
 const DialogsPage: React.FC = () => {
+  const { data} = authApi.useGetIsAuthorizedQuery();
   const [newMessage, setNewMessage] = React.useState<string>('')
   const { dialog } = useAppSelector(state => state.dialogSlice);
   const dispatch = useAppDispatch();
@@ -33,33 +36,39 @@ const DialogsPage: React.FC = () => {
   }
 
   return (
-    <Container maxWidth="xl">
-      <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-        {dialog.map((message) => (
-          <div key={message.id}>
-            <ListItem alignItems="flex-start">
-              <ListItemAvatar>
-                <Avatar alt="UserAvatar" src={userLogo} />
-              </ListItemAvatar>
-              <ListItemText
-                primary={message.name}
-                secondary={
-                  <React.Fragment>
-                    {message.message}
-                  </React.Fragment>
-                }
-              />
-            </ListItem>
-            <Divider variant="inset" component="li" />
-          </div>
-        ))}
+    <>
+    {!data?.id ? 
+    <Navigate to='/login'/>
+    : <Container maxWidth="xl">
+    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+      {dialog.map((message) => (
+        <div key={message.id}>
+          <ListItem alignItems="flex-start">
+            <ListItemAvatar>
+              <Avatar alt="UserAvatar" src={userLogo} />
+            </ListItemAvatar>
+            <ListItemText
+              primary={message.name}
+              secondary={
+                <React.Fragment>
+                  {message.message}
+                </React.Fragment>
+              }
+            />
+          </ListItem>
+          <Divider variant="inset" component="li" />
+        </div>
+      ))}
 
-      </List>
-      <Stack spacing={3} direction="row">
-        <TextField id="outlined-basic" label="New message" variant="outlined" value={newMessage} onChange={handleChange} />
-        <Button onClick={handleClick} variant="outlined">Send message</Button>
-      </Stack>
-    </Container>
+    </List>
+    <Stack spacing={3} direction="row">
+      <TextField id="outlined-basic" label="New message" variant="outlined" value={newMessage} onChange={handleChange} />
+      <Button onClick={handleClick} variant="outlined">Send message</Button>
+    </Stack>
+  </Container>
+  }
+    
+    </>
 
   );
 }

@@ -27,13 +27,14 @@ const validationSchema = yup.object().shape({
 const LoginPage: React.FC = () => {
 
   const navigate = useNavigate();
-  const [login, { data, status }] = authApi.useLoginMutation();
+  const {data: authData} = authApi.useGetIsAuthorizedQuery();
+  const [login, { data }] = authApi.useLoginMutation();
 
   const handleLogin = async (values: LoginFormRequestType) => {
     await login(values).unwrap();
   }
 
-  if (data?.resultCode === 0) {
+  if (authData?.id) {
     navigate('/profile');
   }
 
