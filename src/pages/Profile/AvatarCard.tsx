@@ -1,4 +1,4 @@
-import { Card, CardContent, CardMedia } from '@mui/material'
+import { Card, CardContent, CardMedia, ListItem } from '@mui/material'
 import React, { FC } from 'react'
 import { profileApi, ProfileResponseType } from '../../store/api/profileApi'
 import userLogo from '../../assets/images/dev.jpg';
@@ -7,9 +7,10 @@ type CardAvatarProps = {
   profileData?: ProfileResponseType;
   paramsId?: string;
   isLoading: boolean;
+  profileStatus?: string | number;
 }
 
-const AvatarCard: FC<CardAvatarProps> = ({ profileData, paramsId, isLoading }) => {
+const AvatarCard: FC<CardAvatarProps> = ({ profileData, paramsId, isLoading, profileStatus }) => {
 
   const [uploaadPhoto, { }] = profileApi.useUploadFileMutation()
 
@@ -32,6 +33,11 @@ const AvatarCard: FC<CardAvatarProps> = ({ profileData, paramsId, isLoading }) =
         <CardContent>
           <input onChange={selectNewAvatar} type="file" ></input>
         </CardContent>
+      }
+      {profileStatus &&
+        <ListItem>
+          <b>Status</b> : {profileStatus}
+        </ListItem>
       }
 
     </Card>

@@ -57,6 +57,7 @@ const App: React.FC = () => {
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
         <Routes>
+          <Route path='/' element={<ProfilePage />} />
           <Route path='/users' element={<UsersPage />} />
           <Route path='/profile/*' element={<ProfilePage />} />
           <Route path='/messages' element={<DialogsPage />} />

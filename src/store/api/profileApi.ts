@@ -45,7 +45,7 @@ export type ProfileResponseType = {
 export const profileApi = createApi({
     reducerPath: 'profileApi',
     baseQuery: fetchBaseQuery({baseUrl: 'https://social-network.samuraijs.com/api/1.0/profile'}),
-    tagTypes: ['Profile'],
+    tagTypes: ['Profile', 'ProfileStatus'],
     endpoints: (build) => ({
         getProfile: build.query<ProfileResponseType,string | number>({
             query: (userId) => ({
@@ -95,6 +95,16 @@ export const profileApi = createApi({
                 method: 'DELETE',
             }),
             invalidatesTags: ['Profile']
+        }),
+        getProfileStatus: build.query<string, number | string>({
+            query: (userId) => ({
+                url: `status/${userId}`,
+                credentials: 'include',
+                headers: {
+                    "API-KEY": "24635b41-a830-49f0-81e2-67ea1fbc69b6"
+                },
+            }),
+            providesTags: result =>  ['ProfileStatus']
         }),
     })
 })

@@ -21,14 +21,13 @@ const theme = createTheme();
 const validationSchema = yup.object().shape({
   email: yup.string().required("Required"),
   password: yup.string().required("Required"),
-
 });
 
 const LoginPage: React.FC = () => {
-
   const navigate = useNavigate();
   const {data: authData} = authApi.useGetIsAuthorizedQuery();
-  const [login, { data }] = authApi.useLoginMutation();
+  const {data: captchaData} = authApi.useGetCaptchaQuery();
+  const [login, {data}] = authApi.useLoginMutation();
 
   const handleLogin = async (values: LoginFormRequestType) => {
     await login(values).unwrap();
@@ -37,7 +36,7 @@ const LoginPage: React.FC = () => {
   if (authData?.id) {
     navigate('/profile');
   }
-
+  
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -46,6 +45,7 @@ const LoginPage: React.FC = () => {
             email: "",
             password: "",
             remember: false,
+            captcha: ''
           }}
           validationSchema={validationSchema}
           onSubmit={(
@@ -103,10 +103,23 @@ const LoginPage: React.FC = () => {
                     control={<Checkbox />}
                     label="Remember me"
                   />
-                  {/* <FormControlLabel
-                    control={<Checkbox value="remember" name='remeber' color="primary" />}
-                    label="Remember me"
-                  /> */}
+                  {data?.resultCode === 10 && 
+                  <>
+                  <Field
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="captcha"
+                    label="Please enter the text below"
+                    id="captcha"
+                    component={FormTextField}
+                  />
+                  <div style={{display: 'flex', justifyContent: 'center'}}>
+                  <img src={captchaData?.url} />
+                  </div>
+                  </>
+                  }
+                  
                   <Button
                     type="submit"
                     disabled={formikProps.isSubmitting}

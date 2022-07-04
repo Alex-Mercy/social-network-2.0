@@ -5,21 +5,27 @@ import { Container } from '@mui/system';
 import { usersApi } from '../../store/api/usersApi';
 import UserItem from './UserItem';
 import { debounce } from 'lodash';
+import { useSearchParams } from 'react-router-dom';
 
 
 const pageSize = 50;
 
 const UsersPage: React.FC = () => {
-  const [searchValue, setSearchValue] = React.useState('')
+  const [searchParams, setSearchParams] = useSearchParams();
+  const termQuery = searchParams.get('term') || '';
+  
+  const [searchValue, setSearchValue] = React.useState(termQuery);
   const [currentPage, setCurrentPage] = React.useState(1);
   const filters = ['All users', 'Followed users', 'Unfollowed users'];
   const [filter, setFilter] = React.useState(filters[0]);
   const friend = filter === 'Followed users' ? true : filter === 'Unfollowed users' ? false : null;
+  console.log(searchParams);
+  
 
   const { data, error, isLoading } = usersApi.useGetAllUsersQuery(
     { count: pageSize, 
       page: currentPage, 
-      term: searchValue,
+      term: termQuery,
       friend
     });
 
@@ -29,11 +35,18 @@ const UsersPage: React.FC = () => {
   };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e?.target?.value)
-    setCurrentPage(1);
-
+    const query = e?.target?.value;
+    setSearchValue(query);
+    debounceFn(query)
   }
-  const debouncedOnchange = debounce(handleSearch, 700)
+
+  const handleDebounceFn = (query: string ) => {
+    setCurrentPage(1);
+    setSearchParams({term: query});
+    
+  }
+
+  const debounceFn = React.useCallback(debounce(handleDebounceFn, 2000), []);
 
   const skeleton = Array(pageSize).fill(0);
 
@@ -51,7 +64,7 @@ const UsersPage: React.FC = () => {
         noValidate
         autoComplete="off"
       >
-        <TextField id="search" label='Find user' onChange={debouncedOnchange} variant="outlined" />
+        <TextField id="search" label='Find user' onChange={handleSearch} value={searchValue} variant="outlined" />
         <TextField
           id="outlined-select-currency"
           select

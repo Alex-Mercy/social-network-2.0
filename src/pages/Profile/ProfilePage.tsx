@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Container } from '@mui/system';
 import { Grid } from '@mui/material';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { authApi } from '../../store/api/authApi';
 import { profileApi } from '../../store/api/profileApi';
 import AvatarCard from './AvatarCard';
@@ -14,12 +14,16 @@ const ProfilePage: React.FC = () => {
   const params = useParams();
   const paramsId = Object.values(params)[0];
   const userId = paramsId ? paramsId : authData?.id;
+  const { data: profileStatusData } = profileApi.useGetProfileStatusQuery(userId!, {
+    skip: authData?.id === undefined
+  });
   const { data: profileData, isLoading: profileLoading } = profileApi.useGetProfileQuery(userId!, {
     skip: authData?.id === undefined
   });
 
   const contactsData = profileData && Object.entries(profileData.contacts);
   const listTitles = ['Full name', 'Looking for a job', 'My professional slills', 'About me',];
+
 
 
   return (
@@ -34,6 +38,7 @@ const ProfilePage: React.FC = () => {
                   isLoading={isLoading}
                   profileData={profileData}
                   paramsId={paramsId}
+                  profileStatus={profileStatusData}
                 />
                 : <Loader>
                   <AvatarCard

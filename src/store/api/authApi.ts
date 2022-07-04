@@ -1,4 +1,4 @@
-import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
+import {createApi, fetchBaseQuery, SkipToken} from "@reduxjs/toolkit/dist/query/react";
 
 
 export type MeResponseType = {
@@ -18,7 +18,7 @@ export type LoginFormRequestType = {
     email: string;
     password: string;
     remember: boolean;
-    captcha?: boolean;
+    captcha: string;
 }
 
 export type LoginFormResponseType = {
@@ -33,14 +33,18 @@ export type LoginFormResponseType = {
     resultCode: number;
 }
 
+export type CaptchaResponseType = {
+    url: string;
+}
+
 export const authApi = createApi({
     reducerPath: 'authApi',
-    baseQuery: fetchBaseQuery({baseUrl: 'https://social-network.samuraijs.com/api/1.0/auth'}),
-    tagTypes: ['Auth'],
+    baseQuery: fetchBaseQuery({baseUrl: 'https://social-network.samuraijs.com/api/1.0/'}),
+    tagTypes: ['Auth', 'Captcha'],
     endpoints: (build) => ({
         getIsAuthorized: build.query<MeResponseDataType, void>({
             query: () => ({
-                url: 'me',
+                url: 'auth/me',
                 credentials: 'include',
                 headers: {
                     "API-KEY": "24635b41-a830-49f0-81e2-67ea1fbc69b6"
@@ -50,24 +54,34 @@ export const authApi = createApi({
             providesTags: ['Auth']
         }),
         login: build.mutation<LoginFormResponseType, LoginFormRequestType>({
-            query: ({email, password, remember}) => ({
-                url: `login`,
+            query: ({email, password, remember, captcha}) => ({
+                url: `auth/login`,
                 credentials: 'include',
                 headers: {
                     "API-KEY": "24635b41-a830-49f0-81e2-67ea1fbc69b6"
                 },
                 method: 'POST',
-                body: {email, password, remember}
+                body: {email, password, remember, captcha}
             }),
-            invalidatesTags: ['Auth']
+            invalidatesTags: ['Auth', 'Captcha']
         }),
         logout: build.mutation<LoginFormResponseType, void>({
             query: () => ({
-                url: `login`,
+                url: `auth/login`,
                 credentials: 'include',
                 method: 'DELETE',
             }),
             invalidatesTags: ['Auth']
+        }),
+        getCaptcha: build.query<CaptchaResponseType, void >({
+            query: () => ({
+                url: '/security/get-captcha-url',
+                credentials: 'include',
+                headers: {
+                    "API-KEY": "24635b41-a830-49f0-81e2-67ea1fbc69b6"
+                },
+            }),
+            providesTags: ['Captcha']
         }),
     })
 })
