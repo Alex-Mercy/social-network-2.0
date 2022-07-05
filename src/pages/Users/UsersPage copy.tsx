@@ -13,12 +13,11 @@ const pageSize = 50;
 const UsersPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const termQuery = searchParams.get('term') || '';
-  const friendQuery = searchParams.get('friend') || '';
-  const pageQuery = Number(searchParams.get('page')) || 1;
+  let friendQuery = searchParams.get('friend') || null;
   const filterValue = friendQuery ===  'true' ? 'Followed users' : friendQuery === 'false' ? 'Unfollowed users' : 'All users';
   
   const [searchValue, setSearchValue] = React.useState(termQuery);
-  const [currentPage, setCurrentPage] = React.useState(pageQuery);
+  const [currentPage, setCurrentPage] = React.useState(1);
   const filters = ['All users', 'Followed users', 'Unfollowed users'];
   
   const [filter, setFilter] = React.useState(filterValue);
@@ -27,28 +26,19 @@ const UsersPage: React.FC = () => {
   
   const { data, error, isLoading } = usersApi.useGetAllUsersQuery(
     { count: pageSize, 
-      page: pageQuery, 
+      page: currentPage, 
       term: termQuery,
       friend: friendQuery
     });
 
   const pagesCount = data?.totalCount && Math.ceil(data.totalCount / pageSize);
-  
-  const changePage = (e: React.ChangeEvent<unknown>, value: number) => {
+  const handleChange = (e: React.ChangeEvent<unknown>, value: number) => {
     setCurrentPage(value);
-    if (value > 1) params.page = value;
-    if (searchValue) params.term = searchValue;
-    if (friendQuery === 'true') params.friend = true;
-    if (friendQuery === 'false') params.friend = false;
-    setSearchParams(params);
   };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e?.target?.value;
-    if (friendQuery === 'true') params.friend = true;
-    if (friendQuery === 'false') params.friend = false;
     if (query.length) params.term = query;
-    if (currentPage > 1) params.page = currentPage;
     setSearchValue(query);
     debounceFn(params)
   }
@@ -67,8 +57,7 @@ const UsersPage: React.FC = () => {
     setFilter(query);
     if (query === 'Followed users') params.friend = true;
     if (query === 'Unfollowed users') params.friend = false;
-    if (searchValue) params.term = searchValue;
-    if (currentPage > 1) params.page = currentPage;
+    console.log(params);
     
     setSearchParams(params);
   };
@@ -109,7 +98,7 @@ const UsersPage: React.FC = () => {
           <UserItem key={user.id} user={user} />
         )}
       </List>
-      <Pagination count={pagesCount} page={currentPage} onChange={changePage} />
+      <Pagination count={pagesCount} page={currentPage} onChange={handleChange} />
     </Container>
   );
 }
