@@ -26,7 +26,7 @@ export type RequestUsersType = {
     count: number;
     page: number;
     term?: string;
-    friend: boolean | null | string;
+    friend: boolean | string;
 }
 
 export const usersApi = createApi({

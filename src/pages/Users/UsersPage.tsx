@@ -7,50 +7,55 @@ import UserItem from './UserItem';
 import { debounce } from 'lodash';
 import { useSearchParams } from 'react-router-dom';
 
-
 const pageSize = 50;
 
 const UsersPage: React.FC = () => {
+  const skeleton = Array(pageSize).fill(0);
+
+
   const [searchParams, setSearchParams] = useSearchParams();
   const termQuery = searchParams.get('term') || '';
   const friendQuery = searchParams.get('friend') || '';
   const pageQuery = Number(searchParams.get('page')) || 1;
-  const filterValue = friendQuery ===  'true' ? 'Followed users' : friendQuery === 'false' ? 'Unfollowed users' : 'All users';
-  
+
+  const filters = ['All users', 'Followed users', 'Unfollowed users'];
+  const filterValue = friendQuery === 'true' ? 'Followed users' : friendQuery === 'false' ? 'Unfollowed users' : 'All users';
+
   const [searchValue, setSearchValue] = React.useState(termQuery);
   const [currentPage, setCurrentPage] = React.useState(pageQuery);
-  const filters = ['All users', 'Followed users', 'Unfollowed users'];
-  
   const [filter, setFilter] = React.useState(filterValue);
 
-  const params: any = {};
-  
   const { data, error, isLoading } = usersApi.useGetAllUsersQuery(
-    { count: pageSize, 
-      page: pageQuery, 
+    {
+      count: pageSize,
+      page: pageQuery,
       term: termQuery,
       friend: friendQuery
     });
 
   const pagesCount = data?.totalCount && Math.ceil(data.totalCount / pageSize);
-  
-  const changePage = (e: React.ChangeEvent<unknown>, value: number) => {
-    setCurrentPage(value);
-    if (value > 1) params.page = value;
-    if (searchValue) params.term = searchValue;
-    if (friendQuery === 'true') params.friend = true;
-    if (friendQuery === 'false') params.friend = false;
+
+  const params: any = {};
+
+  const handleParams = (page: number, filter: string, search: string) => {
+    if (page > 1) params.page = page;
+    if (search.length) params.term = search;
+    if (filter === 'Followed users') params.friend = true;
+    if (filter === 'Unfollowed users') params.friend = false;
+    return params;
+  }
+
+  const changePage = (e: React.ChangeEvent<unknown>, page: number) => {
+    setCurrentPage(page);
+    handleParams(page, filter, searchValue)
     setSearchParams(params);
   };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e?.target?.value;
-    if (friendQuery === 'true') params.friend = true;
-    if (friendQuery === 'false') params.friend = false;
-    if (query.length) params.term = query;
-    if (currentPage > 1) params.page = currentPage;
     setSearchValue(query);
-    debounceFn(params)
+    handleParams(1, filter, query);
+    debounceFn(params);
   }
 
   const handleDebounceFn = (params: string) => {
@@ -60,16 +65,10 @@ const UsersPage: React.FC = () => {
 
   const debounceFn = React.useCallback(debounce(handleDebounceFn, 700), []);
 
-  const skeleton = Array(pageSize).fill(0);
-
   const changeFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e?.target?.value;
     setFilter(query);
-    if (query === 'Followed users') params.friend = true;
-    if (query === 'Unfollowed users') params.friend = false;
-    if (searchValue) params.term = searchValue;
-    if (currentPage > 1) params.page = currentPage;
-    
+    handleParams(currentPage, query, searchValue);
     setSearchParams(params);
   };
 
@@ -94,7 +93,7 @@ const UsersPage: React.FC = () => {
             <MenuItem key={filter} value={filter}>
               {filter}
             </MenuItem>
-            ))}
+          ))}
         </TextField>
       </Box>
       <List sx={{ width: '100%', bgcolor: 'background.paper' }}>

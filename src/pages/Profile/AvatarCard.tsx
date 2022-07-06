@@ -1,6 +1,6 @@
-import { Card, CardContent, CardMedia, ListItem } from '@mui/material'
-import React, { FC } from 'react'
-import { profileApi, ProfileResponseType } from '../../store/api/profileApi'
+import { Button, Card, CardContent, CardMedia, ListItem, TextField } from '@mui/material'
+import React, { FC, useState } from 'react'
+import { profileApi, ProfileResponseType, ProfileStatusRequestType } from '../../store/api/profileApi'
 import userLogo from '../../assets/images/dev.jpg';
 
 type CardAvatarProps = {
@@ -11,14 +11,29 @@ type CardAvatarProps = {
 }
 
 const AvatarCard: FC<CardAvatarProps> = ({ profileData, paramsId, isLoading, profileStatus }) => {
-
-  const [uploaadPhoto, { }] = profileApi.useUploadFileMutation()
+  const [editMode, setEditMode] = useState(false);
+  const [statusValue, setStatusValue] = useState(profileStatus);
+  const [uploaadPhoto, { }] = profileApi.useUploadFileMutation();
+  const [setStatus, {}] = profileApi.usePutProfileStatusMutation();
 
   const selectNewAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length) {
       uploaadPhoto(e.target.files[0]);
     }
   }
+
+  console.log(statusValue);
+  
+  
+  const newStatus: ProfileStatusRequestType = {
+    status: statusValue as string
+  }
+
+  const handleClick = async() => {
+    if(editMode) await setStatus(newStatus);
+    setEditMode(!editMode)
+  }
+
   return (
     <Card sx={{ maxWidth: 345 }}>
       {!isLoading &&
@@ -35,9 +50,32 @@ const AvatarCard: FC<CardAvatarProps> = ({ profileData, paramsId, isLoading, pro
         </CardContent>
       }
       {profileStatus &&
-        <ListItem>
-          <b>Status</b> : {profileStatus}
-        </ListItem>
+        <>
+          {editMode ?
+            <TextField
+              variant="outlined"
+              label="Status"
+              size="small"
+              defaultValue={profileStatus}
+              onChange={(e) => setStatusValue(e.target.value)}
+              sx={{
+                marginLeft: '1ch'
+              }}
+            />
+            :
+            <ListItem>
+              <span><b>Status</b>: {profileStatus}</span>
+            </ListItem>
+          }
+
+          <Button
+            style={{ margin: '5px 5px 10px 10px' }}
+            variant='outlined'
+            onClick={handleClick}
+          >
+            {!editMode ? 'Change Status' : 'Save Status'}
+          </Button>
+        </>
       }
 
     </Card>

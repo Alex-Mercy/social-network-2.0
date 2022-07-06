@@ -42,6 +42,16 @@ export type ProfileResponseType = {
     photos: ProfilePhotosType; 
 }
 
+export type ProfileStatusRequestType = {
+    status: string;
+}
+
+export type ProfileStatusResponseType = {
+    resultCode: number;
+    messages: string[];
+    data: Object;
+}
+
 export const profileApi = createApi({
     reducerPath: 'profileApi',
     baseQuery: fetchBaseQuery({baseUrl: 'https://social-network.samuraijs.com/api/1.0/profile'}),
@@ -105,6 +115,18 @@ export const profileApi = createApi({
                 },
             }),
             providesTags: result =>  ['ProfileStatus']
+        }),
+        putProfileStatus: build.mutation<ProfileStatusResponseType, ProfileStatusRequestType>({
+            query: (status) => ({
+                url: `status`,
+                credentials: 'include',
+                headers: {
+                    "API-KEY": "24635b41-a830-49f0-81e2-67ea1fbc69b6"
+                },
+                method: 'PUT',
+                body: status
+            }),
+            invalidatesTags: ['ProfileStatus']
         }),
     })
 })
