@@ -1,6 +1,7 @@
-import { Button, Checkbox, FormControlLabel, List, Stack} from '@mui/material';
+import { Button, Checkbox, FormControlLabel, List, Stack } from '@mui/material';
 import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik';
 import React, { FC } from 'react'
+import * as yup from "yup";
 import { profileApi, ProfileRequestType, ProfileResponseType } from '../../store/api/profileApi';
 import { FormTextField } from '../Login/FormTextField';
 
@@ -10,6 +11,19 @@ type EditDataProps = {
     contactsData?: [string, string][];
     handleClick: () => void;
 }
+
+const validationSchema = yup.object().shape({
+    contacts: yup.object().shape({
+        facebook: yup.string().url('Enter a valid url'),
+        website: yup.string().url('Enter a valid url'),
+        vk: yup.string().url('Enter a valid url'),
+        twitter: yup.string().url('Enter a valid url'),
+        instagram: yup.string().url('Enter a valid url'),
+        youtube: yup.string().url('Enter a valid url'),
+        github: yup.string().url('Enter a valid url'),
+        mainLink: yup.string().url('Enter a valid url'),
+    })
+});
 
 
 const EditDataProfile: FC<EditDataProps> = ({ data, listTitles, contactsData, handleClick }) => {
@@ -39,6 +53,7 @@ const EditDataProfile: FC<EditDataProps> = ({ data, listTitles, contactsData, ha
                         mainLink: data?.contacts.mainLink ? data?.contacts.mainLink : ''
                     }
                 }}
+                validationSchema={validationSchema}
                 onSubmit={(
                     values: ProfileRequestType,
                     formikHelpers: FormikHelpers<ProfileRequestType>
@@ -109,7 +124,13 @@ const EditDataProfile: FC<EditDataProps> = ({ data, listTitles, contactsData, ha
                                 ))}
                             </Stack>
                         </List>
-                        <Button type="submit" disabled={formikProps.isSubmitting} variant='outlined'>Save changes</Button>
+                        <Button
+                            type="submit"
+                            disabled={!formikProps.isValid || formikProps.isSubmitting}
+                            variant='outlined'
+                        >
+                            Save changes
+                        </Button>
                     </Form>
                 )}
             </Formik>

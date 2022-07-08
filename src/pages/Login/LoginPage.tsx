@@ -19,9 +19,10 @@ import { authApi, LoginFormRequestType } from '../../store/api/authApi';
 const theme = createTheme();
 
 const validationSchema = yup.object().shape({
-  email: yup.string().required("Required"),
-  password: yup.string().required("Required"),
+  email: yup.string().required('Email is required').email('Enter a valid email'),
+  password: yup.string().required('Password is required'),
 });
+
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -122,7 +123,7 @@ const LoginPage: React.FC = () => {
                   
                   <Button
                     type="submit"
-                    disabled={formikProps.isSubmitting}
+                    disabled={!formikProps.isValid || formikProps.isSubmitting}
                     fullWidth
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
