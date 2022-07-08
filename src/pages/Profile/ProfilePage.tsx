@@ -23,7 +23,7 @@ const ProfilePage: React.FC = () => {
 
   const contactsData = profileData && Object.entries(profileData.contacts);
   const listTitles = ['Full name', 'Looking for a job', 'My professional slills', 'About me',];
-
+  
 
 
   return (

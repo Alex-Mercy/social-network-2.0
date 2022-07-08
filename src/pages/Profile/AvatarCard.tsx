@@ -22,8 +22,6 @@ const AvatarCard: FC<CardAvatarProps> = ({ profileData, paramsId, isLoading, pro
     }
   }
 
-  console.log(statusValue);
-  
   
   const newStatus: ProfileStatusRequestType = {
     status: statusValue as string
