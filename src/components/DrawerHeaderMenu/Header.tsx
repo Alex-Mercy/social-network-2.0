@@ -114,9 +114,11 @@ const Header: FC<HeaderProps> = ({ handleDrawerOpen, open, MenuPrimaryItems }) =
                 </MenuItem>
               </Menu>
             </Box>
-            : <Button variant="contained" component={Link} to='/login' disableElevation>
+            : data !== undefined ? <Button variant="contained" component={Link} to='/login' disableElevation>
               Login
             </Button>
+            :
+            <></>
           }
 
         </Toolbar>

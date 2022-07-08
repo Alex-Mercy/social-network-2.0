@@ -3,49 +3,54 @@ import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
 import { usersApi, UserType } from '../../store/api/usersApi';
 import userLogo from '../../assets/images/dev.jpg';
+import { authApi } from '../../store/api/authApi';
 
 type UserItemProps = {
-    user: UserType;
+  user: UserType;
 
 }
 
-const UserItem: FC<UserItemProps> = ({user }) => {
-    const [follow, {error: followError, isLoading: isFollowLoading, data: followData}]  = usersApi.useFollowUserMutation();
-    const [unfollow, {isLoading: isUnFollowLoading, data: unFollowData}] = usersApi.useUnFollowUserMutation();
+const UserItem: FC<UserItemProps> = ({ user }) => {
+  const [follow, { error: followError, isLoading: isFollowLoading, data: followData }] = usersApi.useFollowUserMutation();
+  const [unfollow, { isLoading: isUnFollowLoading, data: unFollowData }] = usersApi.useUnFollowUserMutation();
+  const { data } = authApi.useGetIsAuthorizedQuery();
 
   return (
     <div>
-            <ListItem alignItems="flex-start">
-              <Link to={'/profile/' + user.id}>
-              <ListItemAvatar >
-                <Avatar alt="User" src={user.photos.small ? user.photos.small : userLogo} />
-              </ListItemAvatar>
-              </Link>
-              <ListItemText
-                primary={user.name}
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      sx={{ display: 'inline' }}
-                      component="span"
-                      variant="body2"
-                      color="text.primary"
-                    >
-                      {user.status && 'status:'} {user.status}
-                    </Typography>
+      <ListItem alignItems="flex-start">
+        <Link to={'/profile/' + user.id}>
+          <ListItemAvatar >
+            <Avatar alt="User" src={user.photos.small ? user.photos.small : userLogo} />
+          </ListItemAvatar>
+        </Link>
+        <ListItemText
+          primary={user.name}
+          secondary={
+            <React.Fragment>
+              <Typography
+                sx={{ display: 'inline' }}
+                component="span"
+                variant="body2"
+                color="text.primary"
+              >
+                {user.status && 'status:'} {user.status}
+              </Typography>
 
-                  </React.Fragment>
+            </React.Fragment>
 
-                }
-              />
-              {user.followed ?
-                <Button variant="contained" disabled={isUnFollowLoading} onClick={() => unfollow(user.id)}>Unfollow</Button>
-                : <Button variant="outlined" disabled={isFollowLoading} onClick={() => follow(user.id)}>Follow</Button>
-              }
-            </ListItem>
+          }
+        />
+        {data?.id && user.followed ?
+          <Button variant="contained" disabled={isUnFollowLoading} onClick={() => unfollow(user.id)}>Unfollow</Button>
+          : data?.id ?
+            <Button variant="outlined" disabled={isFollowLoading} onClick={() => follow(user.id)}>Follow</Button>
+            :
+            <></>
+        }
+      </ListItem>
 
-            <Divider variant="inset" component="li" />
-          </div>
+      <Divider variant="inset" component="li" />
+    </div>
   )
 }
 

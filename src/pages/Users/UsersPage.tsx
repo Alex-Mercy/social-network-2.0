@@ -6,12 +6,12 @@ import { usersApi } from '../../store/api/usersApi';
 import UserItem from './UserItem';
 import { debounce } from 'lodash';
 import { useSearchParams } from 'react-router-dom';
+import { authApi } from '../../store/api/authApi';
 
 const pageSize = 50;
 
 const UsersPage: React.FC = () => {
   const skeleton = Array(pageSize).fill(0);
-
 
   const [searchParams, setSearchParams] = useSearchParams();
   const termQuery = searchParams.get('term') || '';
@@ -25,6 +25,7 @@ const UsersPage: React.FC = () => {
   const [currentPage, setCurrentPage] = React.useState(pageQuery);
   const [filter, setFilter] = React.useState(filterValue);
 
+  const { data: authData } = authApi.useGetIsAuthorizedQuery();
   const { data, error, isLoading } = usersApi.useGetAllUsersQuery(
     {
       count: pageSize,
@@ -32,6 +33,7 @@ const UsersPage: React.FC = () => {
       term: termQuery,
       friend: friendQuery
     });
+
 
   const pagesCount = data?.totalCount && Math.ceil(data.totalCount / pageSize);
 
@@ -72,6 +74,8 @@ const UsersPage: React.FC = () => {
     setSearchParams(params);
   };
 
+
+
   return (
     <Container maxWidth="md">
       <Box
@@ -83,8 +87,8 @@ const UsersPage: React.FC = () => {
         autoComplete="off"
       >
         <TextField id="search" label='Find user' onChange={handleSearch} value={searchValue} variant="outlined" />
-        <TextField
-          id="outlined-select-currency"
+
+        {authData?.id && <TextField
           select
           value={filter}
           onChange={changeFilter}
@@ -95,6 +99,7 @@ const UsersPage: React.FC = () => {
             </MenuItem>
           ))}
         </TextField>
+        }
       </Box>
       <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
 

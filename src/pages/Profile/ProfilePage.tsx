@@ -24,11 +24,14 @@ const ProfilePage: React.FC = () => {
   const contactsData = profileData && Object.entries(profileData.contacts);
   const listTitles = ['Full name', 'Looking for a job', 'My professional slills', 'About me',];
   
+  console.log(authData?.id);
+  
 
 
   return (
     <>
-      {!authData?.id ?
+    
+      {authData !== undefined && !authData?.id ?
         <Navigate to="/login" />
         : <Container maxWidth="xl">
           <Grid container spacing={2} direction="row" justifyContent="center">

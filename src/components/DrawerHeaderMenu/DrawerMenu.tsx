@@ -9,9 +9,11 @@ import EmailIcon from '@mui/icons-material/Email';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import SettingsIcon from '@mui/icons-material/Settings';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
+import LoginIcon from '@mui/icons-material/Login';
 import MuiDrawer from '@mui/material/Drawer';
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import { DrawerHeader, drawerWidth } from '../../App';
+import { authApi } from '../../store/api/authApi';
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -58,9 +60,14 @@ type DrawerMenuProps = {
   theme: Theme;
   MenuPrimaryItems: string[];
   MenuSecondaryItems: string[];
+  MenuNotAuthorized: string[];
 }
 
-const DrawerMenu: FC<DrawerMenuProps> = ({open, handleDrawerClose, theme, MenuPrimaryItems, MenuSecondaryItems}) => {
+const DrawerMenu: FC<DrawerMenuProps> = ({open, handleDrawerClose, theme, MenuPrimaryItems, MenuSecondaryItems, MenuNotAuthorized}) => {
+  const {data} = authApi.useGetIsAuthorizedQuery();
+
+
+  
 
   return (
     <Drawer variant="permanent" open={open}>
@@ -71,17 +78,25 @@ const DrawerMenu: FC<DrawerMenuProps> = ({open, handleDrawerClose, theme, MenuPr
         </DrawerHeader>
         <Divider />
         <List>
-          {MenuPrimaryItems.map((text, index) => (
+          {data?.id ? MenuPrimaryItems.map((text, index) => (
             <MenuListItem key={index} text={text} open={open}>
               {text === 'Profile' && <AccountBoxIcon />}
               {text === 'Users' && <GroupIcon />}
               {text === 'Messages' && <EmailIcon />}
             </MenuListItem>
-          ))}
+          ))
+          :
+          MenuNotAuthorized.map((text, index) => (
+            <MenuListItem key={index} text={text} open={open}>
+              {text === 'Users' && <GroupIcon />}
+              {text === 'Login' && <LoginIcon />}
+            </MenuListItem>
+          ))
+          }
         </List>
         <Divider />
         <List>
-          {MenuSecondaryItems.map((text, index) => (
+          { data?.id && MenuSecondaryItems.map((text, index) => (
             <MenuListItem key={index} text={text} open={open}>
               {text === 'Music' && <MusicNoteIcon />}
               {text === 'Videos' && <VideoLibraryIcon />}

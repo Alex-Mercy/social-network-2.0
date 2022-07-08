@@ -16,6 +16,8 @@ import LoginPage from './pages/Login/LoginPage';
 export const drawerWidth = 240;
 const MenuPrimaryItems = ['Profile', 'Users', 'Messages'];
 const MenuSecondaryItems = ['Music', 'Videos', 'Settings'];
+const MenuNotAuthorized = ['Login', 'Users'];
+
 
 export const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -53,6 +55,7 @@ const App: React.FC = () => {
         theme={theme}
         MenuPrimaryItems={MenuPrimaryItems}
         MenuSecondaryItems={MenuSecondaryItems}
+        MenuNotAuthorized={MenuNotAuthorized}
       />
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
