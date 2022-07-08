@@ -14,6 +14,7 @@ import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik';
 import { FormTextField } from './FormTextField';
 import { useNavigate } from 'react-router-dom';
 import { authApi, LoginFormRequestType } from '../../store/api/authApi';
+import { Alert } from '@mui/material';
 
 
 const theme = createTheme();
@@ -37,6 +38,9 @@ const LoginPage: React.FC = () => {
   if (authData?.id) {
     navigate('/profile');
   }
+  
+  console.log(data?.resultCode);
+  
   
   return (
     <ThemeProvider theme={theme}>
@@ -97,6 +101,9 @@ const LoginPage: React.FC = () => {
                     autoComplete="current-password"
                     component={FormTextField}
                   />
+                  {data?.resultCode !== undefined && data?.resultCode !== 0 &&
+                  <Alert severity="error">{data?.messages[0]}</Alert>
+                  }
                   <Field
                     as={FormControlLabel}
                     type="checkbox"
@@ -130,6 +137,7 @@ const LoginPage: React.FC = () => {
                   >
                     Sign In
                   </Button>
+                  
                 </Box>
               </Box>
             </Form>
