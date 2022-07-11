@@ -8,7 +8,7 @@ const SettingsPage: FC = () => {
 
   return (
     <>
-      {!data?.id ?
+      {data !== undefined && !data?.id ?
         <Navigate to='/login' />
         : <Container maxWidth="xl">
           <div>SettingsPage</div>

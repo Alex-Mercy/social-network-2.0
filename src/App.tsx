@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Route, Routes } from 'react-router-dom';
 import ProfilePage from './pages/Profile/ProfilePage';
-import DialogsPage from './pages/Dialogs/DialogsPage';
 import MusicPage from './pages/Music/MusicPage';
 import VideosPage from './pages/Videos/VideosPage';
 import SettingsPage from './pages/Settings/SettingsPage';
@@ -12,9 +11,11 @@ import UsersPage from './pages/Users/UsersPage';
 import Header from './components/DrawerHeaderMenu/Header';
 import DrawerMenu from './components/DrawerHeaderMenu/DrawerMenu';
 import LoginPage from './pages/Login/LoginPage';
+import MessagesPage from './pages/Messages/MessagesPage';
+import ChatPage from './pages/Chat/ChatPage';
 
 export const drawerWidth = 240;
-const MenuPrimaryItems = ['Profile', 'Users', 'Messages'];
+const MenuPrimaryItems = ['Profile', 'Users', 'Messages', 'Chat'];
 const MenuSecondaryItems = ['Music', 'Videos', 'Settings'];
 const MenuNotAuthorized = ['Login', 'Users'];
 
@@ -63,7 +64,8 @@ const App: React.FC = () => {
           <Route path='/' element={<ProfilePage />} />
           <Route path='/users' element={<UsersPage />} />
           <Route path='/profile/*' element={<ProfilePage />} />
-          <Route path='/messages' element={<DialogsPage />} />
+          <Route path='/messages' element={<MessagesPage />} />
+          <Route path='/chat' element={<ChatPage />} />
           <Route path='/music' element={<MusicPage />} />
           <Route path='/videos' element={<VideosPage />} />
           <Route path='/settings' element={<SettingsPage />} />

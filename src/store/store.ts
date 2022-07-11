@@ -1,6 +1,7 @@
 import { Action, combineReducers, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import { authApi } from "./api/authApi";
+import { dialogsApi } from "./api/dialogsApi";
 import { profileApi } from "./api/profileApi";
 import { usersApi } from "./api/usersApi";
 import { dialogSlice } from "./reducers/dialogSlice";
@@ -10,6 +11,7 @@ const rootReducer = combineReducers({
     [usersApi.reducerPath] : usersApi.reducer,
     [authApi.reducerPath] : authApi.reducer,
     [profileApi.reducerPath] : profileApi.reducer,
+    [dialogsApi.reducerPath] : dialogsApi.reducer,
     dialogSlice: dialogSlice.reducer,
 
 })
@@ -17,7 +19,12 @@ const rootReducer = combineReducers({
 export const store = configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) => 
-    getDefaultMiddleware().concat(usersApi.middleware, authApi.middleware, profileApi.middleware)
+    getDefaultMiddleware().concat(
+      usersApi.middleware, 
+      authApi.middleware, 
+      profileApi.middleware,
+      dialogsApi.middleware,
+      )
 });
 
 export type AppDispatch = typeof store.dispatch;

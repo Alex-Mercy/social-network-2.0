@@ -1,4 +1,5 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
+import { apiKey } from "./authApi";
 
 export type FollowType = {
     resultCode: number;
@@ -16,7 +17,7 @@ export const followApi = createApi({
                 url: `${userId}`,
                 credentials: 'include',
                 headers: {
-                    "API-KEY": "24635b41-a830-49f0-81e2-67ea1fbc69b6"
+                    "API-KEY": apiKey
                 },
                 method: 'POST',
                 body: userId
@@ -28,7 +29,7 @@ export const followApi = createApi({
                 url: `${userId}`,
                 credentials: 'include',
                 headers: {
-                    "API-KEY": "24635b41-a830-49f0-81e2-67ea1fbc69b6"
+                    "API-KEY": apiKey
                 },
                 method: 'DELETE',
                 body: userId

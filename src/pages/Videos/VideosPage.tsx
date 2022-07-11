@@ -7,7 +7,7 @@ const VideosPage: FC = () => {
   const { data } = authApi.useGetIsAuthorizedQuery();
   return (
     <>
-    {!data?.id ?
+    {data !== undefined && !data?.id ?
       <Navigate to='/login' />
     : <Container maxWidth="xl">
       <div>

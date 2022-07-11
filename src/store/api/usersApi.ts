@@ -1,4 +1,5 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
+import { apiKey } from "./authApi";
 import { ProfilePhotosType } from "./profileApi";
 
 
@@ -39,7 +40,7 @@ export const usersApi = createApi({
                 url: 'users',
                 credentials: 'include',
                 headers: {
-                    "API-KEY": "24635b41-a830-49f0-81e2-67ea1fbc69b6"
+                    "API-KEY": apiKey
                 },
                 params: {
                     count,
@@ -55,7 +56,7 @@ export const usersApi = createApi({
                 url: `follow/${userId}`,
                 credentials: 'include',
                 headers: {
-                    "API-KEY": "24635b41-a830-49f0-81e2-67ea1fbc69b6"
+                    "API-KEY": apiKey
                 },
                 method: 'POST',
                 body: userId
@@ -67,7 +68,7 @@ export const usersApi = createApi({
                 url: `follow/${userId}`,
                 credentials: 'include',
                 headers: {
-                    "API-KEY": "24635b41-a830-49f0-81e2-67ea1fbc69b6"
+                    "API-KEY": apiKey
                 },
                 method: 'DELETE',
                 body: userId

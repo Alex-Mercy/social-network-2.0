@@ -23,7 +23,7 @@ export type ChatMessageType = {
   userName: string;
 }
 
-const DialogsPage: React.FC = () => {
+const ChatPage: React.FC = () => {
   const [wsChannel, setWsChannel] = React.useState<WebSocket | null>(null);
   const { data } = authApi.useGetIsAuthorizedQuery();
   const [newMessage, setNewMessage] = React.useState<string>('')
@@ -132,4 +132,4 @@ const DialogsPage: React.FC = () => {
   );
 }
 
-export default DialogsPage;
+export default ChatPage;

@@ -1,5 +1,6 @@
 import {createApi, fetchBaseQuery, SkipToken} from "@reduxjs/toolkit/dist/query/react";
 
+export const apiKey = "24635b41-a830-49f0-81e2-67ea1fbc69b6";
 
 export type MeResponseType = {
     data: MeResponseDataType;
@@ -47,7 +48,7 @@ export const authApi = createApi({
                 url: 'auth/me',
                 credentials: 'include',
                 headers: {
-                    "API-KEY": "24635b41-a830-49f0-81e2-67ea1fbc69b6"
+                    "API-KEY": apiKey
                 },
             }),
             transformResponse: (response: MeResponseType) => response.data,
@@ -58,7 +59,7 @@ export const authApi = createApi({
                 url: `auth/login`,
                 credentials: 'include',
                 headers: {
-                    "API-KEY": "24635b41-a830-49f0-81e2-67ea1fbc69b6"
+                    "API-KEY": apiKey
                 },
                 method: 'POST',
                 body: {email, password, remember, captcha}
@@ -78,7 +79,7 @@ export const authApi = createApi({
                 url: '/security/get-captcha-url',
                 credentials: 'include',
                 headers: {
-                    "API-KEY": "24635b41-a830-49f0-81e2-67ea1fbc69b6"
+                    "API-KEY": apiKey
                 },
             }),
             providesTags: ['Captcha']

@@ -1,4 +1,5 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
+import { apiKey } from "./authApi";
 
 export type ProfileContactsType = {
     github: string;
@@ -62,7 +63,7 @@ export const profileApi = createApi({
                 url: `${userId}`,
                 credentials: 'include',
                 headers: {
-                    "API-KEY": "24635b41-a830-49f0-81e2-67ea1fbc69b6"
+                    "API-KEY": apiKey
                 },
             }),
             providesTags: result =>  ['Profile']
@@ -76,7 +77,7 @@ export const profileApi = createApi({
                 url: '/photo',
                 credentials: 'include',
                 headers: {
-                    "API-KEY": "24635b41-a830-49f0-81e2-67ea1fbc69b6",
+                    "API-KEY": apiKey
                 },
                 method: 'PUT',
                 body: formData,
@@ -91,7 +92,7 @@ export const profileApi = createApi({
                 url: ``,
                 credentials: 'include',
                 headers: {
-                    "API-KEY": "24635b41-a830-49f0-81e2-67ea1fbc69b6"
+                    "API-KEY": apiKey
                 },
                 method: 'PUT',
                 body: userId
@@ -111,7 +112,7 @@ export const profileApi = createApi({
                 url: `status/${userId}`,
                 credentials: 'include',
                 headers: {
-                    "API-KEY": "24635b41-a830-49f0-81e2-67ea1fbc69b6"
+                    "API-KEY": apiKey
                 },
             }),
             providesTags: result =>  ['ProfileStatus']
@@ -121,7 +122,7 @@ export const profileApi = createApi({
                 url: `status`,
                 credentials: 'include',
                 headers: {
-                    "API-KEY": "24635b41-a830-49f0-81e2-67ea1fbc69b6"
+                    "API-KEY": apiKey
                 },
                 method: 'PUT',
                 body: status

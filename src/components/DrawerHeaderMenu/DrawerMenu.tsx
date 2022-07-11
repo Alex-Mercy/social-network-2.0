@@ -10,6 +10,7 @@ import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import SettingsIcon from '@mui/icons-material/Settings';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import LoginIcon from '@mui/icons-material/Login';
+import TelegramIcon from '@mui/icons-material/Telegram';
 import MuiDrawer from '@mui/material/Drawer';
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import { DrawerHeader, drawerWidth } from '../../App';
@@ -83,6 +84,7 @@ const DrawerMenu: FC<DrawerMenuProps> = ({open, handleDrawerClose, theme, MenuPr
               {text === 'Profile' && <AccountBoxIcon />}
               {text === 'Users' && <GroupIcon />}
               {text === 'Messages' && <EmailIcon />}
+              {text === 'Chat' && <TelegramIcon />}
             </MenuListItem>
           ))
           :

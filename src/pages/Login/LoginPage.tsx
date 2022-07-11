@@ -39,8 +39,6 @@ const LoginPage: React.FC = () => {
     navigate('/profile');
   }
   
-  console.log(data?.resultCode);
-  
   
   return (
     <ThemeProvider theme={theme}>
