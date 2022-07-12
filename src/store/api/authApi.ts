@@ -1,6 +1,6 @@
 import {createApi, fetchBaseQuery, SkipToken} from "@reduxjs/toolkit/dist/query/react";
 
-export const apiKey = "24635b41-a830-49f0-81e2-67ea1fbc69b6";
+export const apiKey = "6e577c02-c326-44b0-be97-ae8ef3d8a8b9";
 
 export type MeResponseType = {
     data: MeResponseDataType;

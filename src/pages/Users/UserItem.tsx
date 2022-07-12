@@ -1,6 +1,6 @@
-import { Avatar, Button, Divider, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material'
+import { Avatar, Button, Divider, ListItem, ListItemAvatar, ListItemText, Stack, Typography } from '@mui/material'
 import React, { FC } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { usersApi, UserType } from '../../store/api/usersApi';
 import userLogo from '../../assets/images/dev.jpg';
 import { authApi } from '../../store/api/authApi';
@@ -11,6 +11,7 @@ type UserItemProps = {
 }
 
 const UserItem: FC<UserItemProps> = ({ user }) => {
+  const navigate = useNavigate();
   const [follow, { error: followError, isLoading: isFollowLoading, data: followData }] = usersApi.useFollowUserMutation();
   const [unfollow, { isLoading: isUnFollowLoading, data: unFollowData }] = usersApi.useUnFollowUserMutation();
   const { data } = authApi.useGetIsAuthorizedQuery();
@@ -40,6 +41,8 @@ const UserItem: FC<UserItemProps> = ({ user }) => {
 
           }
         />
+        <Stack direction="row" spacing={2}>
+        <Button variant="text" onClick={() => { navigate('/messages/' + user.id) }} >Message</Button>
         {data?.id && user.followed ?
           <Button variant="contained" disabled={isUnFollowLoading} onClick={() => unfollow(user.id)}>Unfollow</Button>
           : data?.id ?
@@ -47,6 +50,8 @@ const UserItem: FC<UserItemProps> = ({ user }) => {
             :
             <></>
         }
+        </Stack>
+        
       </ListItem>
 
       <Divider variant="inset" component="li" />

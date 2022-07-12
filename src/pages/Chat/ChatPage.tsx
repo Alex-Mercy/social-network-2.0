@@ -14,8 +14,6 @@ import { authApi } from '../../store/api/authApi';
 import { Navigate } from 'react-router-dom';
 
 
-
-
 export type ChatMessageType = {
   message: string;
   photo: string;
@@ -34,23 +32,27 @@ const ChatPage: React.FC = () => {
   // React.useEffect(() => {
   //   let ws: WebSocket;
   //   const _closeHandler = () => {
-
+  //     console.log('CLOSE WS');
+  //     setTimeout(createChannel, 3000)
+      
   //   }
+
   //   function createChannel() {
   //     if (ws !== null) {
   //       ws.removeEventListener('close', _closeHandler)
   //       ws.close();
   //     }
   //     ws = new WebSocket('wss://social-network.samuraijs.com/handlers/ChatHandler.ashx');
-  //     wsChannel?.addEventListener('close', _closeHandler);
-  //   setWsChannel(ws)
-  // }
-  // createChannel();
-  // return () => {
-  //   ws.removeEventListener('close', _closeHandler);
-  //   ws.close();
-  // }
+  //     ws?.addEventListener('close', _closeHandler);
+  //     setWsChannel(ws)
+  //   } 
 
+  //   createChannel();
+
+  //   return () => {
+  //     ws.removeEventListener('close', _closeHandler);
+  //     ws.close();
+  //   }
   // }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -122,7 +124,7 @@ const ChatPage: React.FC = () => {
         </List>
         <Stack spacing={3} direction="row" sx={{ marginTop: 5 }}>
           <TextField id="outlined-basic" label="New message" variant="outlined" value={newMessage} onChange={handleChange} />
-          <Button disabled={wsChannel ===  null || readyStatus !== 'ready'} onClick={sendMessage} variant="outlined">Send message</Button>
+          <Button disabled={wsChannel === null || readyStatus !== 'ready'} onClick={sendMessage} variant="outlined">Send message</Button>
         </Stack>
       </Container>
       {/* } */}

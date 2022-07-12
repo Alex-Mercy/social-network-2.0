@@ -2,6 +2,7 @@ import { Button, Card, CardContent, CardMedia, ListItem, TextField } from '@mui/
 import React, { FC, useState } from 'react'
 import { profileApi, ProfileResponseType, ProfileStatusRequestType } from '../../store/api/profileApi'
 import userLogo from '../../assets/images/dev.jpg';
+import { authApi, MeResponseDataType } from '../../store/api/authApi';
 
 type CardAvatarProps = {
   profileData?: ProfileResponseType;
@@ -12,6 +13,7 @@ type CardAvatarProps = {
 
 const AvatarCard: FC<CardAvatarProps> = ({ profileData, paramsId, isLoading, profileStatus }) => {
   const [editMode, setEditMode] = useState(false);
+  const { data} = authApi.useGetIsAuthorizedQuery();
   const [statusValue, setStatusValue] = useState(profileStatus);
   const [uploaadPhoto, { }] = profileApi.useUploadFileMutation();
   const [setStatus, { }] = profileApi.usePutProfileStatusMutation();
@@ -34,6 +36,9 @@ const AvatarCard: FC<CardAvatarProps> = ({ profileData, paramsId, isLoading, pro
     setEditMode(!editMode)
   }
 
+  console.log(profileData);
+  
+
   return (
     <Card sx={{ maxWidth: 345 }}>
       {!isLoading &&
@@ -49,27 +54,28 @@ const AvatarCard: FC<CardAvatarProps> = ({ profileData, paramsId, isLoading, pro
           <input onChange={selectNewAvatar} type="file" ></input>
         </CardContent>
       }
-      {profileStatus &&
-        <>
-          {editMode ?
-            <TextField
-              variant="outlined"
-              label="Status"
-              size="small"
-              defaultValue={profileStatus}
-              error={statusError}
-              helperText='Max Status length is 300 symbol'
-              onChange={(e) => setStatusValue(e.target.value)}
-              sx={{
-                marginLeft: '1ch'
-              }}
-            />
-            :
+      <>
+        {editMode ?
+          <TextField
+            variant="outlined"
+            label="Status"
+            size="small"
+            defaultValue={profileStatus}
+            error={statusError}
+            helperText='Max Status length is 300 symbol'
+            onChange={(e) => setStatusValue(e.target.value)}
+            sx={{
+              marginLeft: '1ch'
+            }}
+          />
+          : profileStatus ?
             <ListItem>
               <span><b>Status</b>: {profileStatus}</span>
             </ListItem>
-          }
-
+            :
+            <></>
+        }
+        {!paramsId &&
           <Button
             style={{ margin: '5px 5px 10px 10px' }}
             variant='outlined'
@@ -78,8 +84,8 @@ const AvatarCard: FC<CardAvatarProps> = ({ profileData, paramsId, isLoading, pro
           >
             {!editMode ? 'Change Status' : 'Save Status'}
           </Button>
-        </>
-      }
+        }
+      </>
 
     </Card>
   )

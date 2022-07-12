@@ -1,10 +1,20 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 import { apiKey } from "./authApi";
 
+export type DialogItem = {
+    addedAt: string;
+    body: string;
+    id: string;
+    recipientId: number;
+    senderId: number;
+    senderName: string;
+    translatedBody: boolean;
+    viewed: boolean;
+}
 
 export type GetDialogResponseType = {
     error: boolean;
-    items: [];
+    items: DialogItem[];
     totalCount: number;
 }
 
@@ -25,10 +35,13 @@ export type GetNewestMessagesRequest = {
     date: string;
 }
 
+
+
+
 export const dialogsApi = createApi({
     reducerPath: 'dialogsApi',
     baseQuery: fetchBaseQuery({ baseUrl: 'https://social-network.samuraijs.com/api/1.0/dialogs' }),
-    tagTypes: ['AllDialogs', 'OneDialog', 'ViewedDialog',  'NewesTmessages', 'ListOfNewMessages'],
+    tagTypes: ['AllDialogs', 'OneDialog', 'ViewedDialog', 'NewesTmessages', 'ListOfNewMessages'],
     endpoints: (build) => ({
         getAllDialogs: build.query<GetDialogResponseType, void>({
             query: () => ({
@@ -38,7 +51,7 @@ export const dialogsApi = createApi({
                     "API-KEY": apiKey
                 },
             }),
-            providesTags:  ['AllDialogs']
+            providesTags: ['AllDialogs']
         }),
         getDialog: build.query<GetDialogResponseType, number>({
             query: (userId) => ({
@@ -48,7 +61,7 @@ export const dialogsApi = createApi({
                     "API-KEY": apiKey
                 },
             }),
-            providesTags: ['AllDialogs']
+            providesTags: ['OneDialog']
         }),
         startChatting: build.mutation<MessagesResponseType, number>({
             query: (userId) => ({
@@ -72,7 +85,7 @@ export const dialogsApi = createApi({
                 method: 'POST',
                 body: { userId, body }
             }),
-            invalidatesTags: ['AllDialogs']
+            invalidatesTags: ['OneDialog']
         }),
         getIsMessageViewed: build.query<boolean, string>({
             query: (messageId) => ({
@@ -118,7 +131,7 @@ export const dialogsApi = createApi({
             invalidatesTags: ['AllDialogs']
         }),
         getNewestMessages: build.query<Object[], GetNewestMessagesRequest>({
-            query: ({userId, date}) => ({
+            query: ({ userId, date }) => ({
                 url: `${userId}/messages/new?newerThen=${date}`,
                 credentials: 'include',
                 headers: {
