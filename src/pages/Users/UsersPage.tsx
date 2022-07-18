@@ -33,7 +33,8 @@ const UsersPage: React.FC = () => {
       term: termQuery,
       friend: friendQuery
     });
-
+    console.log('Rendered UsersPge');
+    
 
   const pagesCount = data?.totalCount && Math.ceil(data.totalCount / pageSize);
 
