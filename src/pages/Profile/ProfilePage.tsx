@@ -40,6 +40,7 @@ const ProfilePage: React.FC = () => {
                   profileData={profileData}
                   paramsId={paramsId}
                   profileStatus={profileStatusData}
+                  authId = {authData?.id.toString()}
                 />
                 : <Loader>
                   <AvatarCard
@@ -59,6 +60,7 @@ const ProfilePage: React.FC = () => {
                   listTitles={listTitles}
                   contactsData={contactsData}
                   isLoading={isLoading}
+                  authId = {authData?.id.toString()}
                 />
                 : <Loader>
                   <ContentCard

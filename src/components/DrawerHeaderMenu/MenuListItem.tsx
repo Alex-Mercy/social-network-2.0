@@ -6,10 +6,11 @@ type MenuItemProps = {
 text: string;
 open: boolean;
 children: React.ReactNode;
+id?: number;
 }
 
-const MenuListItem: FC<MenuItemProps> = ({text, open, children}) => {
-  const link = text.toLowerCase();
+const MenuListItem: FC<MenuItemProps> = ({text, open, children, id}) => {
+  const link = text === 'profile' ? text + '/' + id : text;
   return (
     <ListItem key={text}  style={{color : '#000000'}} disablePadding component={Link} to={link} sx={{ display: 'block' }}>
               <ListItemButton

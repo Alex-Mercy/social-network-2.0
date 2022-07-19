@@ -22,6 +22,10 @@ export type ChatMessageType = ChatMessageApiType & { id: string };
 let ws: WebSocket | null = null;
 type EventsNamesType = 'messages-received' | 'status-changed';
 
+const notifySubscribersAboutStatus = (status: StatusType) => {
+  subscribers['status-changed'].forEach(s => s(status));
+}
+
 const _closeHandler = () => {
   notifySubscribersAboutStatus('pending')
   setTimeout(createChannel, 3000)
@@ -49,9 +53,7 @@ const cleanup = () => {
   ws?.removeEventListener('error', _errorHandler);
 }
 
-const notifySubscribersAboutStatus = (status: StatusType) => {
-  subscribers['status-changed'].forEach(s => s(status));
-}
+
 
 function createChannel() {
   cleanup();

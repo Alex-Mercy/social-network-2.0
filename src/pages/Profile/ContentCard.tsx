@@ -9,10 +9,11 @@ type ContentCardProps = {
     listTitles: string[];
     contactsData?: [string, string][];
     isLoading: boolean;
+    authId?: string;
 }
 
 
-const ContentCard: FC<ContentCardProps> = ({profileData, paramsId, listTitles, contactsData, isLoading}) => {
+const ContentCard: FC<ContentCardProps> = ({profileData, paramsId, listTitles, contactsData, isLoading, authId}) => {
     const [editMode, setEditMode] = React.useState(false);
 
     const handleClick = () => {
@@ -23,7 +24,12 @@ const ContentCard: FC<ContentCardProps> = ({profileData, paramsId, listTitles, c
         <Card sx={{ maxWidth: 500 }}>
             <CardContent>
                 {editMode
-                    ? <EditDataProfile data={profileData} handleClick={handleClick} contactsData={contactsData} listTitles={listTitles} />
+                    ? <EditDataProfile 
+                    data={profileData} 
+                    handleClick={handleClick} 
+                    contactsData={contactsData} 
+                    listTitles={listTitles} 
+                    />
                     : !isLoading &&
                     <List>
                         <ListItem >
@@ -46,7 +52,7 @@ const ContentCard: FC<ContentCardProps> = ({profileData, paramsId, listTitles, c
                     </List>
                 }
 
-                {!paramsId && !editMode &&
+                {paramsId === authId && !editMode &&
                     <Button onClick={handleClick} variant='outlined'>Edit profile</Button>
                 }
             </CardContent>

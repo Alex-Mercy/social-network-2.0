@@ -63,7 +63,7 @@ const App: React.FC = () => {
         <Routes>
           <Route path='/' element={<ProfilePage />} />
           <Route path='/users' element={<UsersPage />} />
-          <Route path='/profile/*' element={<ProfilePage />} />
+          <Route path='/profile/:id' element={<ProfilePage />} />
           <Route path='/messages/:id' element={<MessagesPage />} />
           <Route path='/chat' element={<ChatPage />} />
           <Route path='/music' element={<MusicPage />} />

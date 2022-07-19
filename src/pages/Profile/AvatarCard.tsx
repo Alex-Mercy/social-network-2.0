@@ -9,9 +9,10 @@ type CardAvatarProps = {
   paramsId?: string;
   isLoading: boolean;
   profileStatus?: string | number;
+  authId?: string;
 }
 
-const AvatarCard: FC<CardAvatarProps> = ({ profileData, paramsId, isLoading, profileStatus }) => {
+const AvatarCard: FC<CardAvatarProps> = ({ profileData, paramsId, isLoading, profileStatus, authId }) => {
   const navigate = useNavigate();
   const [editMode, setEditMode] = useState(false);
   const [statusValue, setStatusValue] = useState(profileStatus);
@@ -49,7 +50,7 @@ const AvatarCard: FC<CardAvatarProps> = ({ profileData, paramsId, isLoading, pro
           alt='User Avatar'
         />
       }
-      {!paramsId ?
+      {paramsId === authId ?
         <CardContent>
           <input onChange={selectNewAvatar} type="file" ></input>
         </CardContent>
@@ -84,7 +85,7 @@ const AvatarCard: FC<CardAvatarProps> = ({ profileData, paramsId, isLoading, pro
             :
             <></>
         }
-        {!paramsId &&
+        {paramsId === authId &&
           <Button
             style={{ margin: '5px 5px 10px 10px' }}
             variant='outlined'

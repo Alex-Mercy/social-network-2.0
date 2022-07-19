@@ -80,7 +80,7 @@ const DrawerMenu: FC<DrawerMenuProps> = ({open, handleDrawerClose, theme, MenuPr
         <Divider />
         <List>
           {data?.id ? MenuPrimaryItems.map((text, index) => (
-            <MenuListItem key={index} text={text} open={open}>
+            <MenuListItem key={index} text={text.toLowerCase()} open={open} id={data.id}>
               {text === 'Profile' && <AccountBoxIcon />}
               {text === 'Users' && <GroupIcon />}
               {text === 'Messages' && <EmailIcon />}
@@ -89,7 +89,7 @@ const DrawerMenu: FC<DrawerMenuProps> = ({open, handleDrawerClose, theme, MenuPr
           ))
           :
           MenuNotAuthorized.map((text, index) => (
-            <MenuListItem key={index} text={text} open={open}>
+            <MenuListItem key={index} text={text.toLowerCase()} open={open}>
               {text === 'Users' && <GroupIcon />}
               {text === 'Login' && <LoginIcon />}
             </MenuListItem>
