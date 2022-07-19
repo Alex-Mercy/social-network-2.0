@@ -16,6 +16,9 @@ export type ChatMessageApiType = {
   userId: number;
   userName: string;
 }
+
+export type ChatMessageType = ChatMessageApiType & { id: string };
+
 let ws: WebSocket | null = null;
 type EventsNamesType = 'messages-received' | 'status-changed';
 

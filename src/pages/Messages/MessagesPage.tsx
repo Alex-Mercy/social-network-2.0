@@ -18,6 +18,8 @@ type MessagesPageParams = {
   id: string;
 }
 
+
+
 const MessagesPage: React.FC = () => {
   const params = useParams<MessagesPageParams>();
   
@@ -38,7 +40,7 @@ const MessagesPage: React.FC = () => {
   const { dialog } = useAppSelector(state => state.dialogSlice);
   const dispatch = useAppDispatch();
   // const {sendMessage} = dialogSlice.actions;
-  console.log(dialogData?.totalCount === 0);
+  console.log(dialogData);
   
 
 
