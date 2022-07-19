@@ -2,7 +2,7 @@ import { Button, Card, CardContent, CardMedia, ListItem, TextField } from '@mui/
 import React, { FC, useState } from 'react'
 import { profileApi, ProfileResponseType, ProfileStatusRequestType } from '../../store/api/profileApi'
 import userLogo from '../../assets/images/dev.jpg';
-import { authApi, MeResponseDataType } from '../../store/api/authApi';
+import { useNavigate } from 'react-router-dom';
 
 type CardAvatarProps = {
   profileData?: ProfileResponseType;
@@ -12,8 +12,8 @@ type CardAvatarProps = {
 }
 
 const AvatarCard: FC<CardAvatarProps> = ({ profileData, paramsId, isLoading, profileStatus }) => {
+  const navigate = useNavigate();
   const [editMode, setEditMode] = useState(false);
-  const { data} = authApi.useGetIsAuthorizedQuery();
   const [statusValue, setStatusValue] = useState(profileStatus);
   const [uploaadPhoto, { }] = profileApi.useUploadFileMutation();
   const [setStatus, { }] = profileApi.usePutProfileStatusMutation();
@@ -37,7 +37,7 @@ const AvatarCard: FC<CardAvatarProps> = ({ profileData, paramsId, isLoading, pro
   }
 
   console.log(profileData);
-  
+
 
   return (
     <Card sx={{ maxWidth: 345 }}>
@@ -49,10 +49,19 @@ const AvatarCard: FC<CardAvatarProps> = ({ profileData, paramsId, isLoading, pro
           alt='User Avatar'
         />
       }
-      {!paramsId &&
+      {!paramsId ?
         <CardContent>
           <input onChange={selectNewAvatar} type="file" ></input>
         </CardContent>
+        :
+        <ListItem>
+          <Button
+            variant='outlined'
+            onClick={() => { navigate('/messages/' + paramsId) }}
+          >
+            Private Message
+          </Button>
+        </ListItem>
       }
       <>
         {editMode ?

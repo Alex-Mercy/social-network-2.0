@@ -3,7 +3,6 @@ import React, { FC } from 'react'
 import { Link } from 'react-router-dom'
 import { ChatMessageType } from '../../store/api/chatApi'
 
-
 const Message: FC<{ message: ChatMessageType }> = ({ message }) => {
     return (
         <div>

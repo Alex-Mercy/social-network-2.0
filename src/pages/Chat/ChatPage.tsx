@@ -20,6 +20,7 @@ const ChatPage: React.FC = React.memo(() => {
       dispatch(actions.removeMessages());
     }
   }, [])
+  
 
   return (
     <>

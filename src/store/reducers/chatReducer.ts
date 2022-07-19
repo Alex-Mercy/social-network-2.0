@@ -1,8 +1,8 @@
 import { Dispatch } from "redux";
-import { chatApi, ChatMessageApiType, StatusType } from "../api/chatApi";
+import { chatApi, ChatMessageApiType, ChatMessageType, StatusType } from "../api/chatApi";
 import { v1 } from 'uuid';
 
-type ChatMessageType = ChatMessageApiType & { id: string };
+
 
 type initialStateType = {
     messages: ChatMessageType[];
@@ -46,10 +46,6 @@ export type InitialStateType = typeof initialState;
 const chatReducer = (state = initialState, action: ChatAction): InitialStateType => {
     switch (action.type) {
         case ChatActionTypes.MESSAGES_RECEIVED:
-            // const newItems = action.payload === state.messages ? {...state, messages: [...state.messages]} 
-            // :  {...state, messages: [...state.messages, ]};
-
-
             return {
                 ...state,
                 messages: [...state.messages, ...action.payload.map(m => ({ ...m, id: v1() }))].filter((m, index, array) => index >= array.length - 100)

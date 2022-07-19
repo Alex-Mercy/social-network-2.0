@@ -1,4 +1,4 @@
-import {createApi, fetchBaseQuery, SkipToken} from "@reduxjs/toolkit/dist/query/react";
+import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/dist/query/react";
 
 export const apiKey = "6e577c02-c326-44b0-be97-ae8ef3d8a8b9";
 
